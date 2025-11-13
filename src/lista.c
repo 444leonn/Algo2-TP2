@@ -1,8 +1,11 @@
 #include "lista.h"
-#include "aux.h"
 #include "constantes.h"
 #include <stdio.h>
 
+typedef struct nodo {
+	void *dato;
+	struct nodo *proximo;
+} nodo_t;
 struct lista {
 	nodo_t *primer_nodo;
 	nodo_t *ultimo_nodo;
