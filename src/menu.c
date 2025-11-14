@@ -39,7 +39,20 @@ menu_t *menu_crear(char *nombre)
     return menu;
 }
 
-bool menu_agregar_opcion(char *c, char *descripcion, bool (*funcion)(void *))
+bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *))
 {
-    if ()
+    if (menu == NULL || c == '\0' || descripcion == NULL || funcion == NULL)
+        return false;
+
+    struct opcion *nueva_opcion = malloc(sizeof(struct opcion));
+    if (nueva_opcion == NULL)
+        return false;
+    
+    bool resultado = hash_insertar(menu->opciones, c, nueva_opcion, NULL);
+
+    size_t largo_evaluar = strlen(descripcion);
+    if (largo_evaluar > menu->largo_opcion && resultado == true)
+        menu->largo_opcion = largo_evaluar;
+
+    return resultado;
 }
