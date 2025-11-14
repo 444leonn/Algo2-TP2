@@ -42,7 +42,7 @@ menu_t *menu_crear(char *nombre)
     return menu;
 }
 
-bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *))
+bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *), void *ctx)
 {
     if (menu == NULL || c == '\0' || descripcion == NULL || funcion == NULL)
         return false;
@@ -52,6 +52,7 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion
         return false;
     nueva_opcion->descripcion = copiar_aux(descripcion);
     nueva_opcion->funcion = funcion;
+    nueva_opcion->ctx = ctx;
 
     char _c[] = { c, '\0' };
     bool resultado = hash_insertar(menu->opciones, _c, nueva_opcion, NULL);
@@ -189,7 +190,7 @@ bool menu_ejecutar_opcion(menu_t *menu, char c)
 
     opcion_t *opcion = hash_buscar(menu->opciones, _c);
     if (opcion != NULL) {
-        opcion->funcion(NULL);
+        opcion->funcion(opcion->ctx);
         return true;
     }
 

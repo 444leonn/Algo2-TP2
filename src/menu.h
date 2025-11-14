@@ -9,6 +9,7 @@ enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3 };
 typedef struct opcion {
     char *descripcion;
     bool (*funcion)(void *);
+    void *ctx;
 } opcion_t;
 
 typedef struct menu {
