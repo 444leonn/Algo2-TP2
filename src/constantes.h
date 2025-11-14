@@ -21,6 +21,7 @@
 #define OPCION_NOMBRE "nombrenombrEnombREnomBREnoMBREnOMBRENOMBRE"
 
 // NOMBRES MENU
+#define MENSAJE_SELECCION "Seleccione una Opcion ...  "
 #define MENU_PRUEBA "Menu Prueba"
 #define NOMBRE_JUEGO "TP2 PokeTest"
 
@@ -33,6 +34,7 @@
 #define FALLO_CREACION_HASH "Error, ha fallado creacion de HASH."
 #define NO_ENCONTRADO "El Pokemon no ha sido encontrado."
 #define OPCION_INVALIDA "Error, opcion de busqueda invalida."
+#define OPCION_NO_ENCONTRADA "Error, la opcion no ha sido encontrada"
 
 // OPCIONES JUEGO
 #define MENU_ANTERIOR "Volver al Menu Anterior"

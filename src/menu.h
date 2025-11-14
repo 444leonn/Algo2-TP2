@@ -55,16 +55,16 @@ void menu_mostrar(menu_t *menu, enum formato_muestra formato);
 char menu_seleccionar_opcion(menu_t *menu);
 
 /*
-*   Muestra el menu completo (nombre, opciones y seleccion de opcio), segun el formato de dibujado que sea elegido.
-*   Si el menu es NULL, no se muestra nada.
-*/
-void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato);
-
-/*
 *   Ejecuta una opcion seleccionada una opcion del menu y ejecuta la funcion que debe realizar.
 *   Devuelve lo retornado por la funcion.
 */
-bool menu_ejecutar_opcion(char c);
+bool menu_ejecutar_opcion(menu_t *menu, char c);
+
+/*
+*   Muestra el menu completo (nombre, opciones, seleccion y ejecucion de opcion), segun el formato de dibujado que sea elegido.
+*   Si el menu es NULL, no se muestra nada.
+*/
+void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato);
 
 /*
 *   Recibe un menu y lo destruye.

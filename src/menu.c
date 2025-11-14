@@ -163,6 +163,50 @@ void menu_mostrar(menu_t *menu, enum formato_muestra formato)
     hash_iterar(menu->opciones, menu_mostrar_opcion, &formato);
 }
 
+char menu_seleccionar_opcion(menu_t *menu)
+{
+    if (menu == NULL)
+        return '\0';
+
+    size_t cantidad_iguales = menu->largo_mayor * 4;
+    mostrar_linea_iguales(cantidad_iguales);
+    printf("\n");
+
+    char c;
+    printf(ANSI_COLOR_BOLD MENSAJE_SELECCION ANSI_COLOR_RESET);
+    scanf("%c", &c);
+    printf("\n");
+
+    return c;
+}
+
+bool menu_ejecutar_opcion(menu_t *menu, char c)
+{
+    if (menu == NULL || c == '\0')
+        return false;
+    
+    char _c[] = {c, '\0'};
+
+    opcion_t *opcion = hash_buscar(menu->opciones, _c);
+    if (opcion != NULL) {
+        opcion->funcion(NULL);
+        return true;
+    }
+
+    return false;
+}
+
+void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato)
+{
+    if (menu == NULL)
+        return;
+
+    menu_mostrar_nombre(menu);
+    menu_mostrar(menu, formato);
+    char opcion_seleccionada = menu_seleccionar_opcion(menu);
+    menu_ejecutar_opcion(menu, opcion_seleccionada);
+}
+
 void destructor_opciones(void *_opcion)
 {
     if (_opcion != NULL) {
