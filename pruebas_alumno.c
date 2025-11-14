@@ -81,12 +81,79 @@ void menu_agregar_opcion_devuelve_true_si_agrega_opcion_correctamente()
 		menu_destruir(menu);
 }
 
-void menu_mostrar_nombre_muestra_nombre_correctamemte()
+void menu_mostrar_nombre_muestra_nombre_correctamemte_para_nombre_test_1()
 {
 	menu_t *menu = menu_crear(MENU_PRUEBA);
 
 	menu_mostrar_nombre(menu);
+
+	if (menu != NULL)
+		menu_destruir(menu);
 }
+
+void menu_mostrar_nombre_muestra_nombre_correctamemte_para_nombre_test_2()
+{
+	menu_t *menu = menu_crear(NOMBRE_JUEGO);
+
+	menu_mostrar_nombre(menu);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
+
+void menu_mostrar_muestra_correctamemte_para_formato_1()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar(menu, FORMATO_1);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
+
+void menu_mostrar_muestra_correctamemte_para_formato_2()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar(menu, FORMATO_2);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
+
+void menu_mostrar_muestra_correctamemte_para_formato_3()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar(menu, FORMATO_3);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}	
 
 
 int main()
@@ -103,8 +170,14 @@ int main()
 	menu_agregar_opcion_devuelve_false_para_opcion_sin_funcion();
 	menu_agregar_opcion_devuelve_true_si_agrega_opcion_correctamente();
 
-	pa2m_nuevo_grupo("Pruebas de Mostrar Nombre:");
-	menu_mostrar_nombre_muestra_nombre_correctamemte();
+	pa2m_nuevo_grupo("Pruebas de Mostrar:");
+	menu_mostrar_nombre_muestra_nombre_correctamemte_para_nombre_test_1();
+	menu_mostrar_nombre_muestra_nombre_correctamemte_para_nombre_test_2();
 	
+	pa2m_nuevo_grupo("Pruebas de Mostrar Opciones:");
+	menu_mostrar_muestra_correctamemte_para_formato_1();
+	menu_mostrar_muestra_correctamemte_para_formato_2();
+	menu_mostrar_muestra_correctamemte_para_formato_3();
+
 	return pa2m_mostrar_reporte();
 }
