@@ -92,7 +92,7 @@ char *parsear_tipo(enum tipo_pokemon tipo)
 		break;
 
 	case TIPO_PSI:
-		return "PSI";
+		return "PSIQ";
 		break;
 
 	case TIPO_LUCH:
