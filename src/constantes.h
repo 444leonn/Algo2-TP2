@@ -34,4 +34,35 @@
 #define NO_ENCONTRADO "El Pokemon no ha sido encontrado."
 #define OPCION_INVALIDA "Error, opcion de busqueda invalida."
 
+// OPCIONES JUEGO
+#define MENU_ANTERIOR "Volver al Menu Anterior"
+
+#define CHAR_C 'C'
+#define CARGAR_ARCHIVO "Cargar Archivo"
+
+#define CHAR_B 'B'
+#define BUSCAR "Buscar Pokemon"
+#define CHAR_N 'N'
+#define BUSCAR_NOMBRE "Buscar por Nombre"
+#define CHAR_I 'I'
+#define BUSCAR_ID "Buscar por ID"
+
+#define CHAR_M 'M'
+#define MOSTRAR "Mostrar Pokemones"
+#define MOSTRAR_NOMBRE "Mostrar por Nombre"
+#define MOSTRAR_ID "Mostrar por ID"
+
+#define CHAR_J 'J'
+#define JUGAR "Jugar"
+
+#define CHAR_S 'S'
+#define JUGAR_SEMILLA "Jugar con Semilla"
+
+#define CHAR_E 'E'
+#define ESTILO "Cambiar Estilo"
+
+#define CHAR_Q 'Q'
+#define SALIR "Salir"
+
+
 #endif // CONSTANTES_H_
