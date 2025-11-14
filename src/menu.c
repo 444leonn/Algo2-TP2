@@ -39,7 +39,7 @@ menu_t *menu_crear(char *nombre)
     return menu;
 }
 
-bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *))
+bool menu_agregar_opcion(menu_t *menu, char *c, char *descripcion, bool (*funcion)(void *))
 {
     if (menu == NULL || c == '\0' || descripcion == NULL || funcion == NULL)
         return false;
