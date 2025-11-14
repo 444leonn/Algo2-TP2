@@ -3,17 +3,18 @@
 
 #include "hash.h"
 
-typedef enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3 }; 
+enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3 }; 
 
 // Estructura para almacenar cada opcion dentro de la tabla de hash de opciones
 typedef struct opcion {
     char *descripcion;
     bool (*funcion)(void *);
-};
+} opcion_t;
 
 typedef struct menu {
     char *nombre;
     bool tiene_nombre;
+    size_t largo_nombre;
     hash_t *opciones;
     size_t cantidad;
     size_t largo_opcion;
@@ -32,7 +33,7 @@ menu_t *menu_crear(char *nombre);
 *   Devuelve true si se logro agregar la opcion.
 *   Devuelve false si no se logro agregar la opcion.
 */
-bool menu_agregar_opcion(menu_t *menu, char *c, char *descripcion, bool (*funcion)(void *));
+bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *));
 
 /*
 *   Muestra el nombre del menu, si es que posee alguno.
