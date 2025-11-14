@@ -9,6 +9,7 @@
 #define TAMAÑO_INICIAL 15
 #define CAPACIDAD_INICIAL 4
 #define CAPACIDAD_MINIMA 3
+#define CAPACIDAD_TABLA 20
 
 #define CANT_INVALIDA 1
 #define ERROR -1
