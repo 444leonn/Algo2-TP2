@@ -155,6 +155,59 @@ void menu_mostrar_muestra_correctamemte_para_formato_3()
 		menu_destruir(menu);
 }	
 
+void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_1()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar_completo(menu, FORMATO_1);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
+
+void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_2()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar_completo(menu, FORMATO_2);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
+
+void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_3()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_agregar_opcion(menu, CHAR_C, CARGAR_ARCHIVO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_B, BUSCAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_M, MOSTRAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_J, JUGAR, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_S, JUGAR_SEMILLA, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu);
+	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu);
+	
+	menu_mostrar_completo(menu, FORMATO_3);
+
+	if (menu != NULL)
+		menu_destruir(menu);
+}
 
 int main()
 {
@@ -178,6 +231,16 @@ int main()
 	menu_mostrar_muestra_correctamemte_para_formato_1();
 	menu_mostrar_muestra_correctamemte_para_formato_2();
 	menu_mostrar_muestra_correctamemte_para_formato_3();
+
+	pa2m_nuevo_grupo("Pruebas Mostrar Completo: ");
+	// menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_1();
+	// printf("\n\n\n\n");
+// 
+	// menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_2();
+	// printf("\n\n\n\n");
+
+	menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_3();
+	printf("\n\n\n\n");
 
 	return pa2m_mostrar_reporte();
 }
