@@ -315,12 +315,12 @@ size_t hash_iterar(hash_t *hash, bool (*f)(char *, void *, void *), void *ctx)
 	return cant_aplicados;
 }
 
-void eliminar_recursivo(nodo_t *nodo, void (*destructor)(void *))
+void hash_eliminar_recursivo(nodo_t *nodo, void (*destructor)(void *))
 {
 	if (nodo == NULL)
 		return;
 
-	eliminar_recursivo(nodo->siguiente, destructor);
+	hash_eliminar_recursivo(nodo->siguiente, destructor);
 
 	if (destructor != NULL)
 		destructor(nodo->par.valor);
@@ -334,7 +334,7 @@ void hash_destruir(hash_t *hash)
 		return;
 
 	for (size_t i = 0; i < hash->capacidad; i++)
-		eliminar_recursivo(hash->tabla[i], NULL);
+		hash_eliminar_recursivo(hash->tabla[i], NULL);
 
 	free(hash->tabla);
 	free(hash);
@@ -346,7 +346,7 @@ void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 		return;
 
 	for (size_t i = 0; i < hash->capacidad; i++)
-		eliminar_recursivo(hash->tabla[i], destructor);
+		hash_eliminar_recursivo(hash->tabla[i], destructor);
 
 	free(hash->tabla);
 	free(hash);
