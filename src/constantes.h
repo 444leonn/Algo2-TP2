@@ -20,6 +20,10 @@
 #define OPCION_ID "idIDIdiD"
 #define OPCION_NOMBRE "nombrenombrEnombREnomBREnoMBREnOMBRENOMBRE"
 
+// NOMBRES MENU
+#define MENU_PRUEBA "Menu Prueba"
+#define NOMBRE_JUEGO "TP2 PokeTest"
+
 // MENSAJES DE ERROR
 #define CANT_PARAMETROS \
 	"Error, debe ingresar una cantidad de parametros valida."

@@ -32,7 +32,7 @@ menu_t *menu_crear(char *nombre);
 *   Devuelve true si se logro agregar la opcion.
 *   Devuelve false si no se logro agregar la opcion.
 */
-bool menu_agregar_opcion(char *c, char *descripcion, bool (*funcion)(void *));
+bool menu_agregar_opcion(menu_t *menu, char *c, char *descripcion, bool (*funcion)(void *));
 
 /*
 *   Muestra el menu, segun el formato de dibujado que sea elegido.
