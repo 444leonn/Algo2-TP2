@@ -35,16 +35,28 @@ menu_t *menu_crear(char *nombre);
 bool menu_agregar_opcion(menu_t *menu, char *c, char *descripcion, bool (*funcion)(void *));
 
 /*
-*   Muestra el menu, segun el formato de dibujado que sea elegido.
-*   Si no el menu es NULL, no se muestra nada.
+*   Muestra el nombre del menu, si es que posee alguno.
+*   Si el menu es NULL, no se muestra nada.
 */
-void menu_mostrar(menu_t *menu, enum formato_muestra);
+void menu_mostrar_nombre(menu_t *menu);
+
+/*
+*   Muestra el menu, segun el formato de dibujado que sea elegido.
+*   Si el menu es NULL, no se muestra nada.
+*/
+void menu_mostrar(menu_t *menu, enum formato_muestra formato);
 
 /*
 *   Permite seleccioanr una opcion.
 *   En caso de error devuelve caracter nulo '\0'
 */
 char menu_seleccionar_opcion(menu_t *menu);
+
+/*
+*   Muestra el menu completo (nombre, opciones y seleccion de opcio), segun el formato de dibujado que sea elegido.
+*   Si el menu es NULL, no se muestra nada.
+*/
+void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato);
 
 /*
 *   Ejecuta una opcion seleccionada una opcion del menu y ejecuta la funcion que debe realizar.
