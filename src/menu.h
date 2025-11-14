@@ -14,10 +14,11 @@ typedef struct opcion {
 typedef struct menu {
     char *nombre;
     bool tiene_nombre;
-    size_t largo_nombre;
     hash_t *opciones;
     size_t cantidad;
+    size_t largo_nombre;
     size_t largo_opcion;
+    size_t largo_mayor;
 } menu_t;
 
 /*

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *copiar_clave_aux(char *clave)
+char *copiar_aux(char *clave)
 {
 	if (clave == NULL)
 		return NULL;
@@ -26,8 +26,9 @@ menu_t *menu_crear(char *nombre)
         return NULL;
 
     if (nombre != NULL) {
-        menu->nombre = copiar_clave_aux(nombre);
+        menu->nombre = copiar_aux(nombre);
         menu->largo_nombre = strlen(nombre);
+        menu->largo_mayor = strlen(nombre);
         menu->tiene_nombre = true;
     }
 
@@ -49,12 +50,18 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion
     struct opcion *nueva_opcion = malloc(sizeof(struct opcion));
     if (nueva_opcion == NULL)
         return false;
-    
-    bool resultado = hash_insertar(menu->opciones, &c, nueva_opcion, NULL);
+    nueva_opcion->descripcion = copiar_aux(descripcion);
+    nueva_opcion->funcion = funcion;
+
+    char _c[] = { c, '\0' };
+    bool resultado = hash_insertar(menu->opciones, _c, nueva_opcion, NULL);
 
     size_t largo_evaluar = strlen(descripcion);
     if (largo_evaluar > menu->largo_opcion && resultado == true)
         menu->largo_opcion = largo_evaluar;
+
+    if (resultado == true)
+        menu->largo_mayor = (menu->largo_nombre > menu->largo_opcion) ? menu->largo_nombre : menu->largo_opcion;
 
     return resultado;
 }
@@ -82,7 +89,7 @@ void mostrar_linea_palabra(size_t cantidad, char *palabra, size_t cantidad_total
         j++;
     }
     
-    printf(ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET, palabra);
+    printf(ANSI_COLOR_BOLD ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET, palabra);
     j += strlen(palabra);
 
     for (int i = 0; i < cantidad; i++) {
@@ -100,9 +107,8 @@ void menu_mostrar_nombre(menu_t *menu)
 {
     if (menu == NULL || menu->tiene_nombre == false)
         return;
-    size_t opcion_larga = (menu->largo_nombre > menu->largo_opcion) ? menu->largo_nombre : menu->largo_opcion;
 
-    size_t cantidad_iguales = opcion_larga * 4;
+    size_t cantidad_iguales = menu->largo_mayor * 4;
     size_t cantidad_espacios = cantidad_iguales - 2;
     size_t cantidad_espacios_impresion = cantidad_iguales / 3;
 
@@ -118,3 +124,60 @@ void menu_mostrar_nombre(menu_t *menu)
     printf("\n");
 }
 
+bool menu_mostrar_opcion(char *clave, void *_opcion, void *_ctx)
+{
+    opcion_t *opcion = _opcion;
+    enum formato_muestra *formato = _ctx;
+
+    switch (*formato)
+    {
+    case FORMATO_1:
+        printf(ANSI_COLOR_BOLD "%s) " ANSI_COLOR_RESET "%s", clave, opcion->descripcion);
+        printf("\n");
+        break;
+    
+    case FORMATO_2:
+        printf(ANSI_COLOR_BOLD ANSI_COLOR_RED "%s" ANSI_COLOR_RESET ". " "%s", clave, opcion->descripcion);
+        printf("\n");
+        break;
+
+    case FORMATO_3:
+        printf(ANSI_COLOR_GREEN "┌-----┐\n" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD "  %s  " ANSI_COLOR_RESET ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET, clave);
+        printf(" %s\n", opcion->descripcion);
+        printf(ANSI_COLOR_GREEN"└-----┘\n\n" ANSI_COLOR_RESET);
+        break;
+
+    default:
+        break;
+    }
+
+    return true;
+}
+
+void menu_mostrar(menu_t *menu, enum formato_muestra formato)
+{
+    if (menu == NULL)
+        return;
+
+    hash_iterar(menu->opciones, menu_mostrar_opcion, &formato);
+}
+
+void destructor_opciones(void *_opcion)
+{
+    if (_opcion != NULL) {
+        opcion_t *opcion = _opcion;
+        free(opcion->descripcion);
+        free(opcion);
+    }
+}
+
+void menu_destruir(menu_t *menu)
+{
+    if (menu == NULL)
+        return;
+
+    hash_destruir_todo(menu->opciones, destructor_opciones);
+    free(menu->nombre);
+    free(menu);
+}
