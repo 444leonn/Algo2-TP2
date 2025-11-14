@@ -81,6 +81,14 @@ void menu_agregar_opcion_devuelve_true_si_agrega_opcion_correctamente()
 		menu_destruir(menu);
 }
 
+void menu_mostrar_nombre_muestra_nombre_correctamemte()
+{
+	menu_t *menu = menu_crear(MENU_PRUEBA);
+
+	menu_mostrar_nombre(menu);
+}
+
+
 int main()
 {
 	pa2m_nuevo_grupo("============== Pruebas TDA Menu ===============");
@@ -94,6 +102,9 @@ int main()
 	menu_agregar_opcion_devuelve_false_para_descripcion_invalida();
 	menu_agregar_opcion_devuelve_false_para_opcion_sin_funcion();
 	menu_agregar_opcion_devuelve_true_si_agrega_opcion_correctamente();
+
+	pa2m_nuevo_grupo("Pruebas de Mostrar Nombre:");
+	menu_mostrar_nombre_muestra_nombre_correctamemte();
 	
 	return pa2m_mostrar_reporte();
 }
