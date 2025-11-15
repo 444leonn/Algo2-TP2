@@ -35,6 +35,7 @@
 #define NO_ENCONTRADO "El Pokemon no ha sido encontrado."
 #define OPCION_INVALIDA "Error, opcion de busqueda invalida."
 #define OPCION_NO_ENCONTRADA "Error, la opcion no ha sido encontrada"
+#define INTENTE_NUEVAMENTE "Intente ingresar la opcion valida nuevamnete."
 
 // OPCIONES JUEGO
 #define MENU_ANTERIOR "Volver al Menu Anterior"
