@@ -10,8 +10,8 @@ valgrind-alumno: pruebas_alumno
 pruebas_alumno: src/*.c pruebas_alumno.c
 	$(CC) $(CFLAGS) src/*.c pruebas_alumno.c -o pruebas_alumno
 
-tp2: src/*.c main.c
-	$(CC) $(CFLAGS) src/*.c main.c -o tp2
+tp2: src/*.c tp2.c
+	$(CC) $(CFLAGS) src/*.c tp2.c -o tp2
 
 ejecutar: tp2
 	./tp2

@@ -20,22 +20,24 @@
 #define OPCION_ID "idIDIdiD"
 #define OPCION_NOMBRE "nombrenombrEnombREnomBREnoMBREnOMBRENOMBRE"
 
-// NOMBRES MENU
-#define MENSAJE_SELECCION "Seleccione una Opcion ...  "
-#define MENU_PRUEBA "Menu Prueba"
-#define NOMBRE_JUEGO "TP2 PokeTest"
-
 // MENSAJES DE ERROR
 #define CANT_PARAMETROS \
 	"Error, debe ingresar una cantidad de parametros valida."
 #define PARAMETRO_INVALIDO "Error, parametro ingresado invalido."
-#define FALLO_LECTURA_ARCHIVO "Error, ha falla la lectura del archivo."
+#define FALLO_LECTURA_ARCHIVO "Error, ha fallado la lectura del archivo."
 #define FALLO_CREACION_ABB "Error, ha fallado creacion de ABB."
 #define FALLO_CREACION_HASH "Error, ha fallado creacion de HASH."
 #define NO_ENCONTRADO "El Pokemon no ha sido encontrado."
 #define OPCION_INVALIDA "Error, opcion de busqueda invalida."
 #define OPCION_NO_ENCONTRADA "Error, la opcion no ha sido encontrada"
 #define INTENTE_NUEVAMENTE "Intente ingresar la opcion valida nuevamnete."
+
+// MENU
+#define MENSAJE_ARCHIVO "Ingrese el nombre de un archivo (path):  "
+#define MENSAJE_CARGADO "Archivo Cargado Correctamente."
+#define MENSAJE_SELECCION "Seleccione una Opcion ...  "
+#define MENU_PRUEBA "Menu Prueba"
+#define NOMBRE_JUEGO "TP2 PokeTest"
 
 // OPCIONES JUEGO
 #define MENU_ANTERIOR "Volver al Menu Anterior"
