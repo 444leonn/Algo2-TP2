@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *copiar_aux(char *clave)
+char *copiar_nombre_aux(char *clave)
 {
 	if (clave == NULL)
 		return NULL;
@@ -26,7 +26,7 @@ menu_t *menu_crear(char *nombre)
         return NULL;
 
     if (nombre != NULL) {
-        menu->nombre = copiar_aux(nombre);
+        menu->nombre = copiar_nombre_aux(nombre);
         menu->largo_nombre = strlen(nombre);
         menu->largo_mayor = strlen(nombre);
         menu->tiene_nombre = true;
@@ -50,7 +50,7 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion
     struct opcion *nueva_opcion = malloc(sizeof(struct opcion));
     if (nueva_opcion == NULL)
         return false;
-    nueva_opcion->descripcion = copiar_aux(descripcion);
+    nueva_opcion->descripcion = copiar_nombre_aux(descripcion);
     nueva_opcion->funcion = funcion;
     nueva_opcion->ctx = ctx;
 
@@ -197,15 +197,17 @@ bool menu_ejecutar_opcion(menu_t *menu, char c)
     return false;
 }
 
-void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato)
+bool menu_mostrar_completo(menu_t *menu, enum formato_muestra formato)
 {
     if (menu == NULL)
-        return;
+        return false;
 
     menu_mostrar_nombre(menu);
     menu_mostrar(menu, formato);
     char opcion_seleccionada = menu_seleccionar_opcion(menu);
-    menu_ejecutar_opcion(menu, opcion_seleccionada);
+    bool resultado_ejecucion = menu_ejecutar_opcion(menu, opcion_seleccionada);
+
+    return resultado_ejecucion;
 }
 
 void destructor_opciones(void *_opcion)
