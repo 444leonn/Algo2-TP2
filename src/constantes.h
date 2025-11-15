@@ -33,9 +33,10 @@
 #define INTENTE_NUEVAMENTE "Intente ingresar la opcion valida nuevamnete."
 
 // MENU
+#define MENSAJE_SELECCION "Seleccione una Opcion ...  "
 #define MENSAJE_ARCHIVO "Ingrese el nombre de un archivo (path):  "
 #define MENSAJE_CARGADO "Archivo Cargado Correctamente."
-#define MENSAJE_SELECCION "Seleccione una Opcion ...  "
+#define MENSAJE_CONTINUAR "Presione ENTER para continuar ...  "
 #define MENU_PRUEBA "Menu Prueba"
 #define NOMBRE_JUEGO "TP2 PokeTest"
 

@@ -54,9 +54,10 @@ bool cargar_archivo(void *ctx)
 	size_t largo = strlen(nombre_ingresado) + 1;
 	poketest->archivo.nombre = malloc(largo * sizeof(char));
 	if (poketest->archivo.nombre == NULL) {
-		printf(ANSI_COLOR_RED FALLO_LECTURA_ARCHIVO ANSI_COLOR_RESET);
+		printf(ANSI_COLOR_RED FALLO_LECTURA_ARCHIVO ANSI_COLOR_RESET "\n\n");
 		return false;
 	}
+	strcpy(poketest->archivo.nombre, nombre_ingresado);
 	
 	poketest->archivo.pokemones = tp1_leer_archivo(poketest->archivo.nombre);
 	if (poketest->archivo.pokemones == NULL) {
@@ -65,7 +66,10 @@ bool cargar_archivo(void *ctx)
 		return false;
 	}
 
-	printf(ANSI_COLOR_BOLD MENSAJE_CARGADO ANSI_COLOR_RESET);
+	printf("\n" ANSI_COLOR_BOLD MENSAJE_CARGADO ANSI_COLOR_RESET "\n\n");
+
+	printf(ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
+	getchar();
 
 	printf(ANSI_CLEAR_SCREEN);
 	printf(ANSI_RESET_SCREEN);
