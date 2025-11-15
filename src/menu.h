@@ -35,7 +35,7 @@ menu_t *menu_crear(char *nombre);
 *   Devuelve true si se logro agregar la opcion.
 *   Devuelve false si no se logro agregar la opcion.
 */
-bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *));
+bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion, bool (*funcion)(void *), void *ctx);
 
 /*
 *   Muestra el nombre del menu, si es que posee alguno.
@@ -64,8 +64,9 @@ bool menu_ejecutar_opcion(menu_t *menu, char c);
 /*
 *   Muestra el menu completo (nombre, opciones, seleccion y ejecucion de opcion), segun el formato de dibujado que sea elegido.
 *   Si el menu es NULL, no se muestra nada.
+*   Devuelve true en caso de que se haya encontrado y ejecutado la opcion, y false en caso contrario.
 */
-void menu_mostrar_completo(menu_t *menu, enum formato_muestra formato);
+bool menu_mostrar_completo(menu_t *menu, enum formato_muestra formato);
 
 /*
 *   Recibe un menu y lo destruye.
