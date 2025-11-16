@@ -1,5 +1,5 @@
-#ifndef __JUEGO_POKETEST_H_
-#define __JUEGO_POKETEST_H_
+#ifndef __MENU_POKETEST_H_
+#define __MENU_POKETEST_H_
 
 #include "ansi.h"
 #include "constantes.h"
@@ -11,27 +11,27 @@
 
 enum MENUS { MENU_PRINCIPAL, MENU_BUSQUEDA, MENU_MUESTRA };
 
-typedef struct juego_poketest {
+typedef struct menu_poketest {
     menu_t **menu;
 	size_t semilla;
 	enum formato_muestra formato;
 	tp1_t *archivo_pokemones;
 	bool opcion_busqueda;
 	bool salir;
-} juego_poketest_t;
+} menu_poketest_t;
 
 /*
 *	Crea una estructura de juego poketest, sin valores.
 *	Retorna la estructura o NULL en caso de error.
 */
-juego_poketest_t *juego_poketest_crear();
+menu_poketest_t *menu_poketest_crear();
 
 /*
 *	Contruye un juego poketest, agregando sus diferentes menus.
 *	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
 *	Devuelve true en el caso de construccion exitosa.
 */
-bool juego_poketest_construir(juego_poketest_t *juego_poketest);
+bool menu_poketest_construir(menu_poketest_t *menu_poketest);
 
 /*
 *	Permite comenzar un juego poketest.
@@ -39,11 +39,11 @@ bool juego_poketest_construir(juego_poketest_t *juego_poketest);
 *	Habilitando todas las funcionalidades.
 *	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
 */
-bool *juego_poketest_jugar(juego_poketest_t *juego_poketest);
+bool *menu_poketest_jugar(menu_poketest_t *menu_poketest);
 
 /*
 *	Libera la memoria empleada para toda la estructura del juego.
 */
-void juego_poketest_destruir(juego_poketest_t *juego_poketest);
+void menu_poketest_destruir(menu_poketest_t *menu_poketest);
 
-#endif // __JUEGO_POKETEST_H_
+#endif // __MENU_POKETEST_H_
