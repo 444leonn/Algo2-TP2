@@ -9,7 +9,7 @@
 #define TAMAÑO_INICIAL 15
 #define CAPACIDAD_INICIAL 4
 #define CAPACIDAD_MINIMA 3
-#define CAPACIDAD_TABLA 20
+#define CAPACIDAD_TABLA 10
 
 #define CANT_INVALIDA 1
 #define ERROR -1
@@ -19,6 +19,9 @@
 // PARA VALIDAR PARAMETROS
 #define OPCION_ID "idIDIdiD"
 #define OPCION_NOMBRE "nombrenombrEnombREnomBREnoMBREnOMBRENOMBRE"
+#define OPCIONES_JUEGO "bBcCeEjJmMqQsS"
+#define OPCION_VOLVER "zZ"
+#define OPCION_BUSQUEDA_MUESTRA "iInN"
 
 // MENSAJES DE ERROR
 #define CANT_PARAMETROS \
@@ -28,15 +31,27 @@
 #define FALLO_CREACION_ABB "Error, ha fallado creacion de ABB."
 #define FALLO_CREACION_HASH "Error, ha fallado creacion de HASH."
 #define NO_ENCONTRADO "El Pokemon no ha sido encontrado."
-#define OPCION_INVALIDA "Error, opcion de busqueda invalida."
-#define OPCION_NO_ENCONTRADA "Error, la opcion no ha sido encontrada"
-#define INTENTE_NUEVAMENTE "Intente ingresar la opcion valida nuevamnete."
+#define OPCION_INVALIDA "Error, opcion invalida."
+#define OPCION_NO_ENCONTRADA "Error, la opcion no ha sido encontrada."
+#define FALTA_ARCHIVO "Error, debe cargar un archivo primero."
+#define FALLO "Error, algo ha fallado."
 
 // MENU
+// Mensajes
+#define INTENTE_NUEVAMENTE "Intente ingresar una opcion valida."
 #define MENSAJE_SELECCION "Seleccione una Opcion ...  "
+#define MENSAJE_INSTRUCCION_ARCHIVO "Cargar Archivo: Ingrese el path de un archivo en formato .csv.\nEl cual contenga pokemones que desee cargar para el juego."
 #define MENSAJE_ARCHIVO "Ingrese el nombre de un archivo (path):  "
 #define MENSAJE_CARGADO "Archivo Cargado Correctamente."
 #define MENSAJE_CONTINUAR "Presione ENTER para continuar ...  "
+#define MENSAJE_VOLVER "Presione Z para volver atras."
+#define MENSAJE_VOLVIENDO "Volviendo al Menu de Inicio ..."
+#define MENSAJE_ESTILO "Cambiando al siguiente estilo del Menu ..."
+#define MENSAJE_INGRESAR_ID "Ingrese el ID de un pokemon:  "
+#define MENSAJE_INGRESAR_NOMBRE "Ingrese el NOMBRE de un pokemon:  "
+#define MENSAJE_POKEMON_ENCONTRADO "Pokemon Encontrado: "
+
+// Nombre Menu
 #define MENU_PRUEBA "Menu Prueba"
 #define NOMBRE_JUEGO "TP2 PokeTest"
 
