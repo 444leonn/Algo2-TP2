@@ -158,7 +158,7 @@ bool menu_mostrar_opcion(char *clave, void *_opcion, void *_ctx)
 
 void menu_mostrar(menu_t *menu, enum formato_muestra formato)
 {
-    if (menu == NULL)
+    if (menu == NULL || menu->opciones == NULL)
         return;
 
     hash_iterar(menu->opciones, menu_mostrar_opcion, &formato);
@@ -183,7 +183,7 @@ char menu_seleccionar_opcion(menu_t *menu)
 
 bool menu_ejecutar_opcion(menu_t *menu, char c)
 {
-    if (menu == NULL || c == '\0')
+    if (menu == NULL || menu->opciones == NULL || c == '\0')
         return false;
     
     char _c[] = {c, '\0'};
@@ -197,11 +197,18 @@ bool menu_ejecutar_opcion(menu_t *menu, char c)
     return false;
 }
 
+void limpiar_pantalla()
+{
+	printf(ANSI_CLEAR_SCREEN);
+	printf(ANSI_RESET_SCREEN);
+}
+
 bool menu_mostrar_completo(menu_t *menu, enum formato_muestra formato)
 {
     if (menu == NULL)
         return false;
 
+    limpiar_pantalla();
     menu_mostrar_nombre(menu);
     menu_mostrar(menu, formato);
     char opcion_seleccionada = menu_seleccionar_opcion(menu);
