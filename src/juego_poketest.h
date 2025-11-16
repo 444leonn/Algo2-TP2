@@ -20,14 +20,30 @@ typedef struct juego_poketest {
 	bool salir;
 } juego_poketest_t;
 
-// TODO: agregar pre y post condiciones
-
+/*
+*	Crea una estructura de juego poketest, sin valores.
+*	Retorna la estructura o NULL en caso de error.
+*/
 juego_poketest_t *juego_poketest_crear();
 
-juego_poketest_t juego_poketest_construir(juego_poketest_t *juego_poketest);
+/*
+*	Contruye un juego poketest, agregando sus diferentes menus.
+*	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
+*	Devuelve true en el caso de construccion exitosa.
+*/
+bool juego_poketest_construir(juego_poketest_t *juego_poketest);
 
-juego_poketest_t *juego_poketest_jugar(juego_poketest_t *juego_poketest);
+/*
+*	Permite comenzar un juego poketest.
+*	Mostrando el primer menu.
+*	Habilitando todas las funcionalidades.
+*	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
+*/
+bool *juego_poketest_jugar(juego_poketest_t *juego_poketest);
 
-void *juego_poketest_destruir(juego_poketest_t *juego_poketest);
+/*
+*	Libera la memoria empleada para toda la estructura del juego.
+*/
+void juego_poketest_destruir(juego_poketest_t *juego_poketest);
 
 #endif // __JUEGO_POKETEST_H_
