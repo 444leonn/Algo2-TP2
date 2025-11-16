@@ -6,19 +6,19 @@ Se pide implementar un juego simple por consola jugable por 2 jugadores a la vez
 
 Para iniciar el juego, puede invocarse tp2 con el archivo de pokedex a utilizar o no. Al ejecutarse el tp2, si fue provisto un archivo, se carga y dicho archivo puede ser utilizado para jugar. Al iniciar el programa se presenta un menú al usuario con las siguientes opciones:
 
-  - (C) Cargar archivo: Pide al usuario un nombre de archivo para cargar
-  - (B) Buscar: Se muestra un submenú con las siguientes opciones
-    - (N) Buscar por nombre: Pide al usuario un nombre y busca en la pokedex los pokemones con ese nombre
-    - (I) Buscar por ID: Pide al usuario un id y busca en la pokedex los pokemones con ese id
-    - (A) Menú anterior: Vuelve al menú anterior
-  - (M) Mostrar: Se muestra un submenú con las siguientes opciones
-    - (N) Mostrar por nombre: Muestra los pokemones de la pokedex ordenados por nombre
-    - (I) Buscar por ID: Muestra los pokemones de la pokedex ordenados por id
-    - (A) Menú anterior: Vuelve al menú anterior
-  - (J) Jugar: Inicia el juego
-  - (S) Jugar con semilla: Pide al usuario un número para utilizar como semilla e inicia el juego
-  - (E) Cambiar estilo: Cambia el estilo de dibujado del menú (cada vez que se selecciona se utiliza el siguiente estilo, se deben implementar por lo menos 3 estilos diferentes)
-  - (Q) Sale del juego
+- (C) Cargar archivo: Pide al usuario un nombre de archivo para cargar
+- (B) Buscar: Se muestra un submenú con las siguientes opciones
+- (N) Buscar por nombre: Pide al usuario un nombre y busca en la pokedex los pokemones con ese nombre
+- (I) Buscar por ID: Pide al usuario un id y busca en la pokedex los pokemones con ese id
+- (A) Menú anterior: Vuelve al menú anterior
+- (M) Mostrar: Se muestra un submenú con las siguientes opciones
+- (N) Mostrar por nombre: Muestra los pokemones de la pokedex ordenados por nombre
+- (I) Buscar por ID: Muestra los pokemones de la pokedex ordenados por id
+- (A) Menú anterior: Vuelve al menú anterior
+- (J) Jugar: Inicia el juego
+- (S) Jugar con semilla: Pide al usuario un número para utilizar como semilla e inicia el juego
+- (E) Cambiar estilo: Cambia el estilo de dibujado del menú (cada vez que se selecciona se utiliza el siguiente estilo, se deben implementar por lo menos 3 estilos diferentes)
+- (Q) Sale del juego
 
   <div align="center">
 <img width="70%" src="img/menu.svg">
@@ -42,10 +42,10 @@ Al finalizar el juego se debe mostrar el resultado: debe incluír el punaje de c
 
 Para este trabajo hay 4 cosas importantes:
 
-  - Que el alumno **pueda demostrar que comprende cómo funcionan y en qué momento conviene utilizar cada uno de los TDA implementados durante la materia**.
-  - La presentación y usabilidad del juego.
-  - La presentación y legibilidad del código.
-  - No se permite la utilización de bibliotecas externas (SDL, ncurses, sarasa). Si alguno quiere hacerlo puede hacerlo de forma optativa, es obligatorio que el trabajo entregado funcione sin requerimientos externos.
+- Que el alumno **pueda demostrar que comprende cómo funcionan y en qué momento conviene utilizar cada uno de los TDA implementados durante la materia**.
+- La presentación y usabilidad del juego.
+- La presentación y legibilidad del código.
+- No se permite la utilización de bibliotecas externas (SDL, ncurses, sarasa). Si alguno quiere hacerlo puede hacerlo de forma optativa, es obligatorio que el trabajo entregado funcione sin requerimientos externos.
 
   Se propone prestar atención a la presentación y se recomienda implementar todos los TDA que crea necesarios para mejorar la presentación tanto del juego final como del código. Como mínimo, se pide implementar el TDA Menú. Dicho TDA debe ser reutilizable para cualquier TP futuro (no solo para este) sin modificaciones.
 
@@ -55,7 +55,7 @@ Para este trabajo hay 4 cosas importantes:
 
 Explicar los siguientes puntos (no necesariamente en orden, pero por favor usando diagramas):
 
-   - ¿Qué TDAs fueron utilizados para implementar las funcionalidades pedidas? ¿Por qué fue elegido ese TDA y no otro?
-   - Explicar el TDA menú. Justifique las operaciones incluídas en el TDA.
-   - Explicar cualquier otro TDA o estructuras auxiliares implementadas.
-   - Explique qué dificultades encontró al implementar el TP2 y cómo pudo solucionarlas.
+- ¿Qué TDAs fueron utilizados para implementar las funcionalidades pedidas? ¿Por qué fue elegido ese TDA y no otro?
+- Explicar el TDA menú. Justifique las operaciones incluídas en el TDA.
+- Explicar cualquier otro TDA o estructuras auxiliares implementadas.
+- Explique qué dificultades encontró al implementar el TP2 y cómo pudo solucionarlas.
