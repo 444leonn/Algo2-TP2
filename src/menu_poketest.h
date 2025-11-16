@@ -1,5 +1,5 @@
-#ifndef __MENU_POKETEST_H_
-#define __MENU_POKETEST_H_
+#ifndef __MENU_POKETEST_H__
+#define __MENU_POKETEST_H__
 
 #include "ansi.h"
 #include "constantes.h"
@@ -46,4 +46,4 @@ bool *menu_poketest_jugar(menu_poketest_t *menu_poketest);
 */
 void menu_poketest_destruir(menu_poketest_t *menu_poketest);
 
-#endif // __MENU_POKETEST_H_
+#endif // __MENU_POKETEST_H__

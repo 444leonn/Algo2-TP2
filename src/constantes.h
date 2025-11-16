@@ -37,6 +37,10 @@
 #define FALLO "Error, algo ha fallado."
 
 // MENU
+#define CANTIDAD_MENUS 3
+// Nombre Menu
+#define MENU_PRUEBA "Menu Prueba"
+#define NOMBRE_JUEGO "TP2 PokeTest"
 // Mensajes
 #define INTENTE_NUEVAMENTE "Intente ingresar una opcion valida."
 #define MENSAJE_SELECCION "Seleccione una Opcion ...  "
@@ -50,10 +54,6 @@
 #define MENSAJE_INGRESAR_ID "Ingrese el ID de un pokemon:  "
 #define MENSAJE_INGRESAR_NOMBRE "Ingrese el NOMBRE de un pokemon:  "
 #define MENSAJE_POKEMON_ENCONTRADO "Pokemon Encontrado: "
-
-// Nombre Menu
-#define MENU_PRUEBA "Menu Prueba"
-#define NOMBRE_JUEGO "TP2 PokeTest"
 
 // OPCIONES JUEGO
 #define MENU_ANTERIOR "Volver al Menu Anterior"
@@ -78,6 +78,7 @@
 
 #define CHAR_S 'S'
 #define JUGAR_SEMILLA "Jugar con Semilla"
+#define CANTIDAD_SEMILLA 5
 
 #define CHAR_E 'E'
 #define ESTILO "Cambiar Estilo"
