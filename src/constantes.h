@@ -42,8 +42,10 @@
 #define MENU_PRUEBA "Menu Prueba"
 #define NOMBRE_JUEGO "TP2 PokeTest"
 // Mensajes
-#define INTENTE_NUEVAMENTE "Intente ingresar una opcion valida."
 #define MENSAJE_SELECCION "Seleccione una Opcion ...  "
+#define MENSAJE_SELECCION_CARTA_1 "Seleccione una Carta:  "
+#define MENSAJE_SELECCION_CARTA_2 "Selecciona otra Carta:  "
+#define INTENTE_NUEVAMENTE "Intente ingresar una opcion valida."
 #define MENSAJE_INSTRUCCION_ARCHIVO "Cargar Archivo: Ingrese el path de un archivo en formato .csv.\nEl cual contenga pokemones que desee cargar para el juego."
 #define MENSAJE_ARCHIVO "Ingrese el nombre de un archivo (path):  "
 #define MENSAJE_CARGADO "Archivo Cargado Correctamente."
@@ -85,6 +87,10 @@
 
 #define CHAR_Q 'Q'
 #define SALIR "Salir"
+
+#define JUGADOR_1 "Jugador 1"
+#define JUGADOR_2 "Jugador 2"
+
 
 
 #endif // CONSTANTES_H_
