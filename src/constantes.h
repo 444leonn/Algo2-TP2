@@ -1,6 +1,10 @@
 #ifndef CONSTANTES_H_
 #define CONSTANTES_H_
 
+// Simbolos
+#define TILDE "✓"
+#define CRUZ "✗"
+
 // MODOS DE APERTURA DE ARCHIVO
 #define MODO_LECTURA "r"
 #define MODO_ESCRITURA "w"

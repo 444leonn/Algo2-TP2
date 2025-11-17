@@ -143,15 +143,15 @@ bool menu_mostrar_opcion(char *clave, void *_opcion, void *_ctx)
         break;
     
     case FORMATO_2:
-        printf(ANSI_COLOR_BOLD ANSI_COLOR_RED "%s" ANSI_COLOR_RESET ". " "%s", clave, opcion->descripcion);
+        printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "%s" ANSI_COLOR_RESET ". " "%s", clave, opcion->descripcion);
         printf("\n");
         break;
 
     case FORMATO_3:
-        printf(ANSI_COLOR_GREEN "┌-----┐\n" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_GREEN "┌—————┐\n" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD "  %s  " ANSI_COLOR_RESET ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET, clave);
         printf(" %s\n", opcion->descripcion);
-        printf(ANSI_COLOR_GREEN"└-----┘\n\n" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_GREEN"└—————┘\n\n" ANSI_COLOR_RESET);
         break;
 
     default:

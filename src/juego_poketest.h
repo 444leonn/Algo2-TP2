@@ -4,12 +4,12 @@
 #include "ansi.h"
 #include "constantes.h"
 #include "tp1.h"
+#include "lista.h"
 #include "abb.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-
 typedef struct jugador {
     size_t puntaje;
 } jugador_t;
@@ -17,6 +17,7 @@ typedef struct jugador {
 typedef struct juego_poketest {
     tp1_t *archivo_pokemones;
     abb_t *pokemones_juego;
+    lista_t *historial;
     void **vector_1, **vector_2;
     size_t semilla;
     size_t cantidad_cargada;

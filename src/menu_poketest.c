@@ -346,7 +346,6 @@ bool cambiar_estilo(void *ctx)
 	
 	printf(ANSI_COLOR_BLUE MENSAJE_ESTILO ANSI_COLOR_RESET "\n");
 	esperar_segundos(2);
-	getchar();
 	if (juego__poketest->formato == FORMATO_1)
 		juego__poketest->formato = FORMATO_2;
 	else if (juego__poketest->formato == FORMATO_2)
