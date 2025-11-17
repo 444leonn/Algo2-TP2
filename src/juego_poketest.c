@@ -32,9 +32,9 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
     printf(ANSI_COLOR_RESET);
     for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
         if (tarjetas[inicio + i].es_rojo)
-            printf(ANSI_COLOR_RED ANSI_COLOR_BOLD " ___________   " ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "┌———————————┐  " ANSI_COLOR_RESET);
         else
-            printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD " ___________   " ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "┌———————————┐  " ANSI_COLOR_RESET);
     }
     printf(ANSI_COLOR_RESET "\n" ANSI_COLOR_RESET);
 
@@ -68,9 +68,9 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
 
     for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
         if (tarjetas[inicio + i].es_rojo)
-            printf(ANSI_COLOR_RED ANSI_COLOR_BOLD " ‾‾‾‾‾‾‾‾‾‾‾   " ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "└———————————┘  " ANSI_COLOR_RESET);
         else
-            printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD " ‾‾‾‾‾‾‾‾‾‾‾   " ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "└———————————┘  " ANSI_COLOR_RESET);
     }
     printf(ANSI_COLOR_RESET "\n\n" ANSI_COLOR_RESET);
 
@@ -252,8 +252,7 @@ void destructor_registro_historial(void *_registro)
 {
     registro_historial_t *registro = _registro;
 
-    if (registro->registro != NULL)
-        free(registro->registro);
+    free(registro->registro);
     free(registro);
 }
 
@@ -303,7 +302,8 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
         
         if (registro_actual != NULL) {
             if (lista_cantidad(juego_poketest->historial) >= 5) {
-                lista_eliminar_elemento(juego_poketest->historial, 0);
+                registro_historial_t *eliminado = lista_eliminar_elemento(juego_poketest->historial, 0);
+                destructor_registro_historial(eliminado);
             }
             lista_agregar(juego_poketest->historial, registro_actual);
         }

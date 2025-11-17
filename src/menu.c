@@ -90,7 +90,7 @@ void mostrar_linea_palabra(size_t cantidad, char *palabra, size_t cantidad_total
 {
     printf(ANSI_COLOR_BOLD "|" ANSI_COLOR_RESET);
     size_t j = 0;
-    for (int i = 0; i < cantidad; i++) {
+    for (int i = 0; i < cantidad + 2; i++) {
         printf(" ");
         j++;
     }
