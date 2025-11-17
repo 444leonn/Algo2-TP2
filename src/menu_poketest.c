@@ -44,24 +44,30 @@ bool validar_archivo_pokemones(menu_poketest_t *menu_poketest)
 		printf(ANSI_COLOR_RED FALTA_ARCHIVO ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
 		esperar_segundos(2);
+		return true;
 	}
-
-    return true;
+	
+	return false;
 }
 
 bool mostrar_menu_con_opcion_volver(menu_poketest_t *menu_poketest, enum MENUS menu_actual, char *opcion_seleccionada)
 {
-    if (menu_poketest == NULL || opcion_seleccionada == NULL)
+    if (menu_poketest == NULL || opcion_seleccionada == NULL) {
         return true;
-
+	}
+	
 	limpiar_pantalla_tp2();
 	menu_mostrar_nombre(menu_poketest->menu[menu_actual]);
     menu_mostrar(menu_poketest->menu[menu_actual], menu_poketest->formato);
 	__fpurge(stdin);
-    *opcion_seleccionada = menu_seleccionar_opcion(menu_poketest->menu[menu_actual]);
-	if (evaluar_volver_menu(&opcion_seleccionada) == true)
+    char opcion = menu_seleccionar_opcion(menu_poketest->menu[menu_actual]);
+
+	char opcion_str[] = {opcion, '\0'};
+	if (evaluar_volver_menu(opcion_str) == true)
 		return true;
-    return true;
+	
+	*opcion_seleccionada = opcion;
+    return false;
 }
 
 bool cargar_archivo(void *ctx)
@@ -127,6 +133,8 @@ bool opcion_nombre(void *ctx)
 	menu_poketest_t *menu_poketest = ctx;
 	
 	if (menu_poketest->opcion_busqueda == true) {
+		menu_poketest->opcion_busqueda = false;
+		
 		printf(ANSI_COLOR_BOLD MENSAJE_INGRESAR_NOMBRE ANSI_COLOR_RESET);
 		__fpurge(stdin);
 		char *nombre_buscado = leer_linea(stdin);
@@ -151,6 +159,8 @@ bool opcion_nombre(void *ctx)
 		getchar();
 
 		free(nombre_buscado);
+
+		return true;
 	}
 
 	aux_pokemones_t aux_pokemones;
@@ -162,9 +172,12 @@ bool opcion_nombre(void *ctx)
 		tp1_con_cada_pokemon(menu_poketest->archivo_pokemones, agregar_aux_pokemon, &aux_pokemones);
 		
 		ordenar_pokemones(aux_pokemones.pokemones, aux_pokemones.cantidad, comparador_nombre);
-		for (int i = 0; i < aux_pokemones.cantidad; i++)
+		for (int i = 0; i < aux_pokemones.cantidad; i++) {
 			mostrar_pokemon(&aux_pokemones.pokemones[i], NULL);
+			free(aux_pokemones.pokemones[i].nombre);
+		}
 
+		free(aux_pokemones.pokemones);
 	}
 	printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
 	__fpurge(stdin);
@@ -182,6 +195,8 @@ bool opcion_id(void *ctx)
 	menu_poketest_t *menu_poketest = ctx;
 	
 	if (menu_poketest->opcion_busqueda == true) {
+		menu_poketest->opcion_busqueda = false;
+
 		printf(ANSI_COLOR_BOLD MENSAJE_INGRESAR_ID ANSI_COLOR_RESET);
 		__fpurge(stdin);
 		char *_id_buscado = leer_linea(stdin);
@@ -206,6 +221,8 @@ bool opcion_id(void *ctx)
 		mostrar_pokemon(pokemon_buscado, NULL);
 		printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
 		getchar();
+
+		return true;
 	}
 
 	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones, mostrar_pokemon, NULL);
@@ -226,7 +243,7 @@ bool buscar(void *ctx)
     if (validar_archivo_pokemones(menu_poketest) == true)
         return true;
 
-    char opcion;
+    char opcion = '\0';
     if (mostrar_menu_con_opcion_volver(menu_poketest, MENU_BUSQUEDA, &opcion) == true)
         return true;
 
@@ -235,9 +252,11 @@ bool buscar(void *ctx)
 		__fpurge(stdin);
 		printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
+
 		esperar_segundos(2);
 		opcion = menu_seleccionar_opcion(menu_poketest->menu[MENU_BUSQUEDA]);
-		if (evaluar_volver_menu(&opcion) == true)
+		char opcion_str[] = {opcion, '\0'};
+		if (evaluar_volver_menu(opcion_str) == true)
 			return true;
 		opcion_ejecutada = menu_ejecutar_opcion(menu_poketest->menu[MENU_BUSQUEDA], opcion);
 	}
@@ -265,8 +284,10 @@ bool mostrar(void *ctx)
 		printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
 		esperar_segundos(2);
+
 		opcion = menu_seleccionar_opcion(menu_poketest->menu[MENU_MUESTRA]);
-		if (evaluar_volver_menu(opcion) == true)
+		char opcion_str[2] = {opcion, '\0'};
+		if (evaluar_volver_menu(opcion_str) == true)
 			return true;
 		opcion_ejecutada = menu_ejecutar_opcion(menu_poketest->menu[MENU_MUESTRA], opcion);
 	}
@@ -274,22 +295,48 @@ bool mostrar(void *ctx)
 	return true;
 }
 
-// TODO: agregar funcionalidad de juego
 bool jugar(void *ctx)
 {
 	if (ctx == NULL)
 		return false;
+	menu_poketest_t *menu_poketest = ctx;
+
+	juego_poketest_t *juego_poketest = juego_poketest_crear(menu_poketest->archivo_pokemones, menu_poketest->semilla);
+	if (juego_poketest == NULL) {
+		printf(ANSI_COLOR_RED FALLO_LECTURA_ARCHIVO ANSI_COLOR_RESET "\n\n");
+		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
+		esperar_segundos(2);
+		return true;
+	}
+
+	bool resultado_carga = juego_poketest_cargar(juego_poketest);
+	if (resultado_carga == false) {
+		printf(ANSI_COLOR_RED FALLO_LECTURA_ARCHIVO ANSI_COLOR_RESET "\n\n");
+		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
+		esperar_segundos(2);
+
+		juego_poketest_destruir(juego_poketest);
+
+		return true;
+	}
+
+	juego_poketest_jugar(juego_poketest);
+
+	juego_poketest_destruir(juego_poketest);
 	
 	return true;
 }
 
-// TODO: agregar funcionalidad de juego con semilla (ver de si usar jugar, pero cambiando la semilla).
 bool jugar_semilla(void *ctx)
 {
 	if (ctx == NULL)
 		return false;
+	menu_poketest_t *menu_poketest = ctx;
 
-	return true;
+	printf(ANSI_COLOR_BOLD MENSAJE_SEMILLA ANSI_COLOR_RESET);
+	scanf("%zu", &menu_poketest->semilla);
+
+	return jugar(menu_poketest);
 }
 
 bool cambiar_estilo(void *ctx)
@@ -318,10 +365,6 @@ bool salir(void *ctx)
 		return false;
 
 	menu_poketest_t *menu_poketest = ctx;
-
-	if (menu_poketest->archivo_pokemones != NULL)
-		tp1_destruir(menu_poketest->archivo_pokemones);
-
 	menu_poketest->salir = true;
 
 	return true;
@@ -330,24 +373,26 @@ bool salir(void *ctx)
 menu_poketest_t *menu_poketest_crear()
 {
     menu_poketest_t *menu_poketest = calloc(1, sizeof(menu_poketest_t));
-    if (menu_poketest != NULL) {
-        menu_poketest->menu[MENU_PRINCIPAL] = menu_crear(NOMBRE_JUEGO);
-        menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
-        menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
-        if (!menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA]) {
-            menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
-            menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
-            menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
-            free(menu_poketest);
-        
-            return NULL;
-        }
-        menu_poketest->formato = FORMATO_1;
-        menu_poketest->semilla = CANTIDAD_SEMILLA;
-
-        return menu_poketest;
+    if (menu_poketest == NULL) {
+        return NULL;
     }
-    return NULL;
+    
+    menu_poketest->menu[MENU_PRINCIPAL] = menu_crear(NOMBRE_JUEGO);
+    menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
+    menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
+    
+    if (!menu_poketest->menu[MENU_PRINCIPAL] || 
+        !menu_poketest->menu[MENU_BUSQUEDA] || 
+        !menu_poketest->menu[MENU_MUESTRA]) {
+        menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
+        menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
+        menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
+        free(menu_poketest);
+        return NULL;
+    }
+    
+    menu_poketest->formato = FORMATO_1;
+    return menu_poketest;
 }
 
 bool agregar_opciones_menu_principal(menu_t *menu_principal, menu_poketest_t *menu_poketest)
@@ -406,9 +451,9 @@ bool menu_poketest_construir(menu_poketest_t *menu_poketest)
     return resultado_principal && resultado_buscar && resultado_mostrar;
 }
 
-bool *menu_poketest_comenzar(menu_poketest_t *menu_poketest)
+bool menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 {
-	if (!menu_poketest || !menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA] || !menu_poketest->archivo_pokemones)
+	if (!menu_poketest || !menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA])
 		return false;
 
 	while (menu_poketest->salir == false) {
@@ -429,12 +474,17 @@ bool *menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 
 void menu_poketest_destruir(menu_poketest_t *menu_poketest)
 {
-	if (!menu_poketest || !menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA] || !menu_poketest->archivo_pokemones)
+	if (menu_poketest == NULL)
 		return;
-		
-	menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
-	menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
-	menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
-	tp1_destruir(menu_poketest->archivo_pokemones);
+
+	if (menu_poketest->menu[MENU_PRINCIPAL])
+		menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
+	if (menu_poketest->menu[MENU_BUSQUEDA])
+		menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
+	if (menu_poketest->menu[MENU_MUESTRA])
+		menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
+	if (menu_poketest->archivo_pokemones)
+		tp1_destruir(menu_poketest->archivo_pokemones);
+	
 	free(menu_poketest);
 }

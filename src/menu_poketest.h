@@ -8,11 +8,12 @@
 #include "aux_tp1.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 enum MENUS { MENU_PRINCIPAL, MENU_BUSQUEDA, MENU_MUESTRA };
 
 typedef struct menu_poketest {
-    menu_t **menu;
+    menu_t *menu[3];
 	size_t semilla;
 	enum formato_muestra formato;
 	tp1_t *archivo_pokemones;
@@ -39,7 +40,7 @@ bool menu_poketest_construir(menu_poketest_t *menu_poketest);
 *	Habilitando todas las funcionalidades.
 *	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
 */
-bool *menu_poketest_comenzar(menu_poketest_t *menu_poketest);
+bool menu_poketest_comenzar(menu_poketest_t *menu_poketest);
 
 /*
 *	Libera la memoria empleada para toda la estructura del juego.

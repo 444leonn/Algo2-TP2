@@ -50,7 +50,7 @@ void menu_mostrar_nombre(menu_t *menu);
 void menu_mostrar(menu_t *menu, enum formato_muestra formato);
 
 /*
-*   Permite seleccioanr una opcion.
+*   Permite seleccionar una opcion.
 *   En caso de error devuelve caracter nulo '\0'
 */
 char menu_seleccionar_opcion(menu_t *menu);
