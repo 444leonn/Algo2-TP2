@@ -19,6 +19,11 @@ char *copiar_nombre_aux(char *clave)
 	return strcpy(aux, clave);
 }
 
+void limpiar_buffer_menu() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 menu_t *menu_crear(char *nombre)
 {
     struct menu *menu = calloc(1, sizeof(struct menu));
@@ -173,9 +178,14 @@ char menu_seleccionar_opcion(menu_t *menu)
     mostrar_linea_iguales(cantidad_iguales);
     printf("\n");
 
-    char c;
     printf(ANSI_COLOR_BOLD MENSAJE_SELECCION ANSI_COLOR_RESET);
-    scanf("%c", &c);
+    int aux = fgetc(stdin);
+    int siguiente = fgetc(stdin);
+    if ((char)siguiente != '\n' && (char)siguiente != EOF) {
+        ungetc(siguiente, stdin);
+    }
+
+    char c = (char)aux;
     printf("\n");
 
     return c;

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <stdio_ext.h>
 
 typedef struct aux_pokemones {
 	struct pokemon *pokemones;
@@ -14,6 +13,11 @@ void limpiar_pantalla_tp2()
 {
 	printf(ANSI_CLEAR_SCREEN);
 	printf(ANSI_RESET_SCREEN);
+}
+
+void limpiar_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 bool evaluar_opciones(char *opcion_evaluada, char *opciones_disponibles)
@@ -59,7 +63,6 @@ bool mostrar_menu_con_opcion_volver(menu_poketest_t *menu_poketest, enum MENUS m
 	limpiar_pantalla_tp2();
 	menu_mostrar_nombre(menu_poketest->menu[menu_actual]);
     menu_mostrar(menu_poketest->menu[menu_actual], menu_poketest->formato);
-	__fpurge(stdin);
     char opcion = menu_seleccionar_opcion(menu_poketest->menu[menu_actual]);
 
 	char opcion_str[] = {opcion, '\0'};
@@ -81,7 +84,6 @@ bool cargar_archivo(void *ctx)
 	printf(ANSI_COLOR_MAGENTA MENSAJE_VOLVER ANSI_COLOR_RESET "\n\n");
 	
 	printf(ANSI_COLOR_BOLD MENSAJE_ARCHIVO ANSI_COLOR_RESET);
-	__fpurge(stdin);
 	char *nombre_ingresado = leer_linea(stdin);
 	if (nombre_ingresado == NULL) {
 		printf(ANSI_COLOR_RED FALLO_LECTURA_ARCHIVO ANSI_COLOR_RESET "\n\n");
@@ -90,8 +92,10 @@ bool cargar_archivo(void *ctx)
 		return true;
 	}
 
-	if (evaluar_volver_menu(nombre_ingresado) == true)
+	if (evaluar_volver_menu(nombre_ingresado) == true) {
+		free(nombre_ingresado);
 		return true;
+	}
 	
 	menu_poketest->archivo_pokemones = tp1_leer_archivo(nombre_ingresado);
 	if (menu_poketest->archivo_pokemones == NULL) {
@@ -103,7 +107,7 @@ bool cargar_archivo(void *ctx)
 	}
 	free(nombre_ingresado);
 
-	printf("\n" ANSI_COLOR_BOLD MENSAJE_CARGADO ANSI_COLOR_RESET "\n\n");
+	printf("\n" ANSI_COLOR_GREEN ANSI_COLOR_BOLD MENSAJE_CARGADO ANSI_COLOR_RESET "\n\n");
 	printf(ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
 	getchar();
 
@@ -136,7 +140,6 @@ bool opcion_nombre(void *ctx)
 		menu_poketest->opcion_busqueda = false;
 		
 		printf(ANSI_COLOR_BOLD MENSAJE_INGRESAR_NOMBRE ANSI_COLOR_RESET);
-		__fpurge(stdin);
 		char *nombre_buscado = leer_linea(stdin);
 		if (nombre_buscado == NULL) {
 			printf(ANSI_COLOR_RED FALLO ANSI_COLOR_RESET "\n");
@@ -155,8 +158,8 @@ bool opcion_nombre(void *ctx)
 		printf("\n" ANSI_COLOR_GREEN MENSAJE_POKEMON_ENCONTRADO ANSI_COLOR_RESET "\n");
 		mostrar_pokemon(pokemon_buscado, NULL);
 		printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
-		__fpurge(stdin);
 		getchar();
+		limpiar_buffer();
 
 		free(nombre_buscado);
 
@@ -180,10 +183,7 @@ bool opcion_nombre(void *ctx)
 		free(aux_pokemones.pokemones);
 	}
 	printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
-	__fpurge(stdin);
 	getchar();
-
-	free(aux_pokemones.pokemones);
 
 	return true;
 }
@@ -198,7 +198,6 @@ bool opcion_id(void *ctx)
 		menu_poketest->opcion_busqueda = false;
 
 		printf(ANSI_COLOR_BOLD MENSAJE_INGRESAR_ID ANSI_COLOR_RESET);
-		__fpurge(stdin);
 		char *_id_buscado = leer_linea(stdin);
 		if (_id_buscado == NULL) {
 			printf(ANSI_COLOR_RED FALLO ANSI_COLOR_RESET "\n");
@@ -221,13 +220,13 @@ bool opcion_id(void *ctx)
 		mostrar_pokemon(pokemon_buscado, NULL);
 		printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
 		getchar();
+		limpiar_buffer();
 
 		return true;
 	}
 
 	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones, mostrar_pokemon, NULL);
 	printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
-	__fpurge(stdin);
 	getchar();
 
 	return true;
@@ -249,7 +248,6 @@ bool buscar(void *ctx)
 
     bool opcion_ejecutada = menu_ejecutar_opcion(menu_poketest->menu[MENU_BUSQUEDA], opcion);
 	while (opcion_ejecutada == false) {
-		__fpurge(stdin);
 		printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
 
@@ -280,7 +278,6 @@ bool mostrar(void *ctx)
 
     bool opcion_ejecutada = menu_ejecutar_opcion(menu_poketest->menu[MENU_MUESTRA], opcion);
 	while (opcion_ejecutada == false) {
-		__fpurge(stdin);
 		printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
 		esperar_segundos(2);
@@ -335,6 +332,7 @@ bool jugar_semilla(void *ctx)
 
 	printf(ANSI_COLOR_BOLD MENSAJE_SEMILLA ANSI_COLOR_RESET);
 	scanf("%zu", &menu_poketest->semilla);
+	limpiar_buffer();
 
 	return jugar(menu_poketest);
 }
@@ -457,10 +455,8 @@ bool menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 		return false;
 
 	while (menu_poketest->salir == false) {
-		__fpurge(stdin);
 		bool opcion_ejecutada = menu_mostrar_completo(menu_poketest->menu[MENU_PRINCIPAL], menu_poketest->formato);
 		while (opcion_ejecutada == false) {
-			__fpurge(stdin);
 			printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
 			printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
 			sleep(2);
