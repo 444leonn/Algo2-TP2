@@ -335,9 +335,9 @@ menu_poketest_t *menu_poketest_crear()
         menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
         menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
         if (!menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA]) {
-            free(menu_poketest->menu[MENU_PRINCIPAL]);
-            free(menu_poketest->menu[MENU_BUSQUEDA]);
-            free(menu_poketest->menu[MENU_MUESTRA]);
+            menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
+            menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
+            menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
             free(menu_poketest);
         
             return NULL;
@@ -404,4 +404,37 @@ bool menu_poketest_construir(menu_poketest_t *menu_poketest)
     bool resultado_mostrar = agregar_opcion_menu_mostrar(menu_poketest->menu[MENU_MUESTRA], menu_poketest);
 
     return resultado_principal && resultado_buscar && resultado_mostrar;
+}
+
+bool *menu_poketest_comenzar(menu_poketest_t *menu_poketest)
+{
+	if (!menu_poketest || !menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA] || !menu_poketest->archivo_pokemones)
+		return false;
+
+	while (menu_poketest->salir == false) {
+		__fpurge(stdin);
+		bool opcion_ejecutada = menu_mostrar_completo(menu_poketest->menu[MENU_PRINCIPAL], menu_poketest->formato);
+		while (opcion_ejecutada == false) {
+			__fpurge(stdin);
+			printf(ANSI_COLOR_RED ANSI_COLOR_BOLD OPCION_INVALIDA ANSI_COLOR_RESET "\n");
+			printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD INTENTE_NUEVAMENTE ANSI_COLOR_RESET "\n\n");
+			sleep(2);
+			char opcion_elegida = menu_seleccionar_opcion(menu_poketest->menu[MENU_PRINCIPAL]);
+			opcion_ejecutada = menu_ejecutar_opcion(menu_poketest->menu[MENU_PRINCIPAL], opcion_elegida);
+		}
+	}
+
+	return true;
+}
+
+void menu_poketest_destruir(menu_poketest_t *menu_poketest)
+{
+	if (!menu_poketest || !menu_poketest->menu[MENU_PRINCIPAL] || !menu_poketest->menu[MENU_BUSQUEDA] || !menu_poketest->menu[MENU_MUESTRA] || !menu_poketest->archivo_pokemones)
+		return;
+		
+	menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
+	menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
+	menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
+	tp1_destruir(menu_poketest->archivo_pokemones);
+	free(menu_poketest);
 }

@@ -39,7 +39,7 @@ bool menu_poketest_construir(menu_poketest_t *menu_poketest);
 *	Habilitando todas las funcionalidades.
 *	Si el juego pasado por parametro es invalido y/o ocurre un error, devuelve false.
 */
-bool *menu_poketest_jugar(menu_poketest_t *menu_poketest);
+bool *menu_poketest_comenzar(menu_poketest_t *menu_poketest);
 
 /*
 *	Libera la memoria empleada para toda la estructura del juego.
