@@ -65,7 +65,7 @@
 #define INICIO_JUEGO           "===================  INICIO DEL JUEGO  ==================="
 #define FIN_JUEGO			   "===================    FIN DEL JUEGO   ==================="
 #define MENSAJE_CARGAR_ARCHIVO "====================  CARGAR ARCHIVO  ===================="
-#define MENSAJE_GANADOR "                                     Ganador: "
+#define MENSAJE_GANADOR "Ganador: "
 #define EMPATE "Empate Felicitaciones a Ambos Jugadores!"
 
 // OPCIONES JUEGO
