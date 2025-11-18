@@ -90,7 +90,7 @@
 
 #define CHAR_S 'S'
 #define JUGAR_SEMILLA "Jugar con Semilla"
-#define CANTIDAD_SEMILLA 5
+#define CANTIDAD_SEMILLA 9
 
 #define CHAR_E 'E'
 #define ESTILO "Cambiar Estilo"
