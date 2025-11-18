@@ -5,7 +5,6 @@
 #include "constantes.h"
 #include "tp1.h"
 #include "lista.h"
-#include "abb.h"
 
 #include <stdlib.h>
 #include <stdio.h>
