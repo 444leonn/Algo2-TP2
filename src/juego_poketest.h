@@ -16,7 +16,7 @@ enum color_tarjeta {COLOR_AZUL, COLOR_ROJO};
 typedef struct tarjeta {
     int id;
     enum color_tarjeta color_actual;
-    void *valor;
+    struct pokemon *valor;
 } tarjeta_t;  
 
 typedef struct registro_historial {

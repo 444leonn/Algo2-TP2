@@ -1,16 +1,7 @@
 #include "juego_poketest.h"
 
 #include <string.h>
-
-typedef struct tarjeta {
-    bool es_rojo;
-} tarjeta_t;
-
-typedef struct registro_historial {
-    char *registro;
-    int primer_carta, segunda_carta;
-    bool resultado;
-} registro_historial_t;
+#include <time.h>
 
 void limpiar_pantalla_juego()
 {
@@ -30,8 +21,9 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
     size_t tarjetas_a_mostrar = fin - inicio;
 
     printf(ANSI_COLOR_RESET);
+    // TODO: Mejorar para que admita dos caracteres sin deformarse.
     for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
-        if (tarjetas[inicio + i].es_rojo)
+        if (tarjetas[inicio + i].color_actual == COLOR_ROJO)
             printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "┌———————————┐  " ANSI_COLOR_RESET);
         else
             printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "┌———————————┐  " ANSI_COLOR_RESET);
@@ -40,7 +32,7 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
 
     for (int j = 0; j < 2; j++) {
         for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
-            if (tarjetas[inicio + i].es_rojo)
+            if (tarjetas[inicio + i].color_actual == COLOR_ROJO)
                 printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "|           |  " ANSI_COLOR_RESET);
             else
                 printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "|           |  " ANSI_COLOR_RESET);
@@ -49,7 +41,7 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
     }
 
     for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
-        if (tarjetas[inicio + i].es_rojo)
+        if (tarjetas[inicio + i].color_actual == COLOR_ROJO)
             printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "|     %zu     |  " ANSI_COLOR_RESET, inicio + i);
         else
             printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "|     %zu     |  " ANSI_COLOR_RESET, inicio + i);
@@ -58,7 +50,7 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
 
     for (int j = 0; j < 2; j++) {
         for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
-            if (tarjetas[inicio + i].es_rojo)
+            if (tarjetas[inicio + i].color_actual == COLOR_ROJO)
                 printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "|           |  " ANSI_COLOR_RESET);
             else
                 printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "|           |  " ANSI_COLOR_RESET);
@@ -67,7 +59,7 @@ void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t 
     }
 
     for (size_t i = 0; i < tarjetas_a_mostrar; i++) {
-        if (tarjetas[inicio + i].es_rojo)
+        if (tarjetas[inicio + i].color_actual == COLOR_ROJO)
             printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "└———————————┘  " ANSI_COLOR_RESET);
         else
             printf(ANSI_COLOR_BLUE ANSI_COLOR_BOLD "└———————————┘  " ANSI_COLOR_RESET);
@@ -82,41 +74,31 @@ int comparador_pokemones(const void *_pokemon_a, const void *_pokemon_b)
     const struct pokemon *pokemon_a = _pokemon_a;
     const struct pokemon *pokemon_b = _pokemon_b;
 
-    return strcmp(pokemon_a->nombre, pokemon_b->nombre);
+    return pokemon_a->id - pokemon_b->id;
 }
 
 juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, size_t semilla)
 {
-    if (archivo_pokemones == NULL || tp1_cantidad(archivo_pokemones) < 3)
+    if (archivo_pokemones == NULL || tp1_cantidad(archivo_pokemones) == 0)
         return NULL;
-    
-    if (semilla < 3)
-        semilla = 3;
-    else if (semilla > tp1_cantidad(archivo_pokemones))
-        semilla = tp1_cantidad(archivo_pokemones);
 
     juego_poketest_t *juego_poketest = calloc(1, sizeof(juego_poketest_t));
     if (juego_poketest == NULL)
         return NULL;
     
+    if (semilla < CANTIDAD_SEMILLA)
+        semilla = CANTIDAD_SEMILLA;
+    else if (semilla > tp1_cantidad(archivo_pokemones))
+        semilla = tp1_cantidad(archivo_pokemones);
+    
     juego_poketest->archivo_pokemones = archivo_pokemones;
     juego_poketest->semilla = semilla;
     juego_poketest->cantidad_cargada = 0;
     juego_poketest->cantidad_tarjetas = 2 * juego_poketest->semilla;
-    juego_poketest->pokemones_juego = abb_crear(comparador_pokemones);
+    juego_poketest->tarjetas = calloc(juego_poketest->cantidad_tarjetas, sizeof(tarjeta_t));
     juego_poketest->historial = lista_crear();
-    if (juego_poketest->pokemones_juego == NULL || juego_poketest->historial == NULL) {
-        abb_destruir(juego_poketest->pokemones_juego);
-        lista_destruir(juego_poketest->historial);
-        free(juego_poketest);
-
-        return NULL;
-    }
-
-    juego_poketest->vector_1 = malloc(juego_poketest->semilla * sizeof(void*));
-    juego_poketest->vector_2 = malloc(juego_poketest->semilla * sizeof(void*));
-    if (juego_poketest->vector_1 == NULL ||juego_poketest->vector_2 == NULL) {
-        abb_destruir(juego_poketest->pokemones_juego);
+    if (juego_poketest->tarjetas == NULL || juego_poketest->historial == NULL) {
+        free(juego_poketest->tarjetas);
         lista_destruir(juego_poketest->historial);
         free(juego_poketest);
 
@@ -130,28 +112,48 @@ bool cargar_pokemon(struct pokemon *pokemon, void *_juego_poketest)
 {
     juego_poketest_t *juego_poketest = _juego_poketest;
     if (juego_poketest->cantidad_cargada < juego_poketest->semilla) {
-        abb_insertar(juego_poketest->pokemones_juego, pokemon);
+        size_t pos_base = juego_poketest->cantidad_cargada * 2;
+        
+        juego_poketest->tarjetas[pos_base].id = pokemon->id;
+        juego_poketest->tarjetas[pos_base].color_actual = COLOR_AZUL;
+        juego_poketest->tarjetas[pos_base].valor = pokemon;
+        
+        juego_poketest->tarjetas[pos_base + 1].id = pokemon->id;
+        juego_poketest->tarjetas[pos_base + 1].color_actual = COLOR_AZUL;
+        juego_poketest->tarjetas[pos_base + 1].valor = pokemon;
+        
         juego_poketest->cantidad_cargada++;
+
         return true;
     }
 
     return false;
 }
 
+void randomizar_tarjetas(tarjeta_t *tarjetas, size_t cantidad) {
+    for (size_t i = cantidad - 1; i > 0; i--) {
+        size_t j = (size_t) rand() % (i + 1);
+        tarjeta_t aux = tarjetas[i];
+        tarjetas[i] = tarjetas[j];
+        tarjetas[j] = aux;
+    }
+}
+
 bool juego_poketest_cargar(juego_poketest_t *juego_poketest)
 {
-    if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->pokemones_juego)
+    if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->tarjetas)
         return false;
+
+    srand((unsigned int)time(NULL));
 
     tp1_con_cada_pokemon(juego_poketest->archivo_pokemones, cargar_pokemon, juego_poketest);
 
-    abb_vectorizar(juego_poketest->pokemones_juego, ABB_INORDEN, juego_poketest->semilla, juego_poketest->vector_1);
-    abb_vectorizar(juego_poketest->pokemones_juego, ABB_PREORDEN, juego_poketest->semilla, juego_poketest->vector_2);
+    randomizar_tarjetas(juego_poketest->tarjetas, juego_poketest->cantidad_tarjetas);
 
     return true;
 }
 
-void seleccionar_opcion(juego_poketest_t *juego_poketest, int *carta_1, int *carta_2)
+void seleccionar_tarjeta(juego_poketest_t *juego_poketest, int *carta_1, int *carta_2)
 {
     if (juego_poketest == NULL || carta_1 == NULL || carta_2 == NULL)
         return;
@@ -161,7 +163,6 @@ void seleccionar_opcion(juego_poketest_t *juego_poketest, int *carta_1, int *car
     } else {
         printf("\n" ANSI_COLOR_BOLD JUGADOR_2 ANSI_COLOR_RESET "\n");
     }
-
     printf(MENSAJE_SELECCION_CARTA_1);
     scanf("%d", carta_1);
     limpiar_buffer_juego();
@@ -171,50 +172,34 @@ void seleccionar_opcion(juego_poketest_t *juego_poketest, int *carta_1, int *car
     limpiar_buffer_juego();
 }
 
-bool evaluar_cartas(juego_poketest_t *juego_poketest, int carta_1, int carta_2, int *indice_1, int *indice_2)
+bool evaluar_tarjetas(juego_poketest_t *juego_poketest, int carta_1, int carta_2)
 {
+    
     if (carta_1 < 0 || carta_1 >= juego_poketest->cantidad_tarjetas || 
         carta_2 < 0 || carta_2 >= juego_poketest->cantidad_tarjetas)
         return false;
     else if (carta_1 == carta_2)
         return false;
-
-    void *_pokemon_1, *_pokemon_2;
     
-    if (carta_1 >= juego_poketest->semilla) {
-        *indice_1 = carta_1 - (int)juego_poketest->semilla;
-        _pokemon_1 = juego_poketest->vector_2[*indice_1];
-    } else {
-        *indice_1 = carta_1;
-        _pokemon_1 = juego_poketest->vector_1[*indice_1];
-    }
-    if (carta_2 >= juego_poketest->semilla) {
-        *indice_2 = carta_2 - (int)juego_poketest->semilla;
-        _pokemon_2 = juego_poketest->vector_2[*indice_2];
-    } else {
-        *indice_2 = carta_2;
-        _pokemon_2 = juego_poketest->vector_1[*indice_2];
-    }
-
-    struct pokemon *pokemon_1 = _pokemon_1;
-    struct pokemon *pokemon_2 = _pokemon_2;
     sleep(1);
     printf(ANSI_COLOR_BOLD "\n        Cartas Seleccionadas:\n" ANSI_COLOR_RESET);
     sleep(1);
-    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_1, pokemon_1->nombre);
+    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_1, juego_poketest->tarjetas[carta_1].valor->nombre);
     sleep(1);
-    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_2, pokemon_2->nombre);
+    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_2, juego_poketest->tarjetas[carta_2].valor->nombre);
     sleep(1);
 
-    if (comparador_pokemones(pokemon_1, pokemon_2) == 0)
+    if (comparador_pokemones(juego_poketest->tarjetas[carta_1].valor, juego_poketest->tarjetas[carta_2].valor) == 0) {
+        juego_poketest->tarjetas[carta_1].color_actual = COLOR_ROJO;
+        juego_poketest->tarjetas[carta_2].color_actual = COLOR_ROJO;
         return true;
-    
+    }
     return false;
 }
 
 void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
 {
-    if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->pokemones_juego)
+    if (!juego_poketest)
         return;
 
     printf(ANSI_COLOR_BOLD FIN_JUEGO ANSI_COLOR_RESET"\n\n");
@@ -232,14 +217,13 @@ void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
     getchar();
 }
 
-registro_historial_t *crear_registro_historial(char *jugador, int carta_1, int carta_2, bool resultado)
+registro_historial_t *crear_registro_historial(char *jugador, int primer_tarjeta, int tarjeta_2, bool resultado)
 {
     registro_historial_t *registro = malloc(sizeof(registro_historial_t));
     if (registro == NULL)
         return NULL;
-
-    registro->primer_carta = carta_1;
-    registro->segunda_carta = carta_2;
+    registro->primer_carta = primer_tarjeta;
+    registro->segunda_carta = tarjeta_2;
     registro->resultado = resultado;
 
     size_t largo = strlen(jugador) + 1;
@@ -249,7 +233,6 @@ registro_historial_t *crear_registro_historial(char *jugador, int carta_1, int c
         free(registro);
         return NULL;
     }
-
     strcpy(registro->registro, jugador);
 
     return registro;
@@ -258,7 +241,6 @@ registro_historial_t *crear_registro_historial(char *jugador, int carta_1, int c
 void destructor_registro_historial(void *_registro)
 {
     registro_historial_t *registro = _registro;
-
     free(registro->registro);
     free(registro);
 }
@@ -266,7 +248,6 @@ void destructor_registro_historial(void *_registro)
 bool mostrar_registro(void *_registro, void *ctx)
 {
     registro_historial_t *registro = _registro;
-
     if (registro->resultado == true) {
         printf(ANSI_COLOR_GREEN TILDE ANSI_COLOR_RESET);
         printf(" %s: %d - %d \n", registro->registro, registro->primer_carta, registro->segunda_carta);
@@ -280,27 +261,23 @@ bool mostrar_registro(void *_registro, void *ctx)
 
 bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
 {
-    if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->pokemones_juego || !juego_poketest->historial)
+    if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->tarjetas || !juego_poketest->historial)
         return false;
     juego_poketest->turno_jugador_1 = true;
 
-    tarjeta_t tarjetas[juego_poketest->cantidad_tarjetas];
-    for (int i = 0; i < juego_poketest->cantidad_tarjetas; i++)
-        tarjetas[i].es_rojo = false;
-
-    size_t cantidad_rojos = 0;
-    while (cantidad_rojos < juego_poketest->cantidad_tarjetas) {
+    size_t cantidad_rojas = 0;
+    while (cantidad_rojas < juego_poketest->cantidad_tarjetas) {
         limpiar_pantalla_juego();
         printf("\n"ANSI_COLOR_BOLD INICIO_JUEGO ANSI_COLOR_RESET"\n\n");
         size_t cantidad_actual = 0;
         while (cantidad_actual < juego_poketest->cantidad_tarjetas) {
-            mostrar_tarjetas(&cantidad_actual, juego_poketest->cantidad_tarjetas, tarjetas);
+            mostrar_tarjetas(&cantidad_actual, juego_poketest->cantidad_tarjetas, juego_poketest->tarjetas);
         }
         lista_con_cada_elemento(juego_poketest->historial, mostrar_registro, NULL);
 
-        int carta_1 = POSICION_INVALIDA, carta_2 = POSICION_INVALIDA, indice_1 = POSICION_INVALIDA, indice_2 = POSICION_INVALIDA;
-        seleccionar_opcion(juego_poketest, &carta_1, &carta_2);
-        bool resultado = evaluar_cartas(juego_poketest, carta_1, carta_2, &indice_1, &indice_2);
+        int carta_1 = POSICION_INVALIDA, carta_2 = POSICION_INVALIDA;
+        seleccionar_tarjeta(juego_poketest, &carta_1, &carta_2);
+        bool resultado = evaluar_tarjetas(juego_poketest, carta_1, carta_2);
         
         registro_historial_t *registro_actual = NULL;
         if (juego_poketest->turno_jugador_1 == true)
@@ -309,7 +286,7 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
             registro_actual = crear_registro_historial(JUGADOR_2, carta_1, carta_2, resultado);
         
         if (registro_actual != NULL) {
-            if (lista_cantidad(juego_poketest->historial) >= 5) {
+            if (lista_cantidad(juego_poketest->historial) >= MAX_HISTORIAL) {
                 registro_historial_t *eliminado = lista_eliminar_elemento(juego_poketest->historial, 0);
                 destructor_registro_historial(eliminado);
             }
@@ -324,9 +301,7 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
                 juego_poketest->turno_jugador_1 = true;
                 juego_poketest->jugador_2.puntaje++;
             }
-            tarjetas[carta_1].es_rojo = true;
-            tarjetas[carta_2].es_rojo = true;
-            cantidad_rojos += 2;
+            cantidad_rojas += 2;
         } else if (juego_poketest->turno_jugador_1 == true)
             juego_poketest->turno_jugador_1 = false;
         else
@@ -343,14 +318,9 @@ void juego_poketest_destruir(juego_poketest_t *juego_poketest)
     if (!juego_poketest)
         return;
 
-    if (juego_poketest->pokemones_juego != NULL)
-        abb_destruir(juego_poketest->pokemones_juego);
-    if (juego_poketest->vector_1 != NULL)
-        free(juego_poketest->vector_1);
-    if (juego_poketest->vector_2 != NULL)
-        free(juego_poketest->vector_2);
+    if (juego_poketest->tarjetas != NULL)
+        free(juego_poketest->tarjetas);
     if (juego_poketest->historial != NULL)
         lista_destruir_todo(juego_poketest->historial, destructor_registro_historial);
-
     free(juego_poketest);
 }

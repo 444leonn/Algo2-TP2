@@ -392,6 +392,7 @@ menu_poketest_t *menu_poketest_crear()
     }
     
     menu_poketest->formato = FORMATO_1;
+	menu_poketest->semilla = CANTIDAD_SEMILLA;
     return menu_poketest;
 }
 
