@@ -26,7 +26,7 @@ void limpiar_buffer_juego() {
 void mostrar_tarjetas(size_t *cantidad_actual, size_t cantidad_total, tarjeta_t *tarjetas)
 {
     size_t inicio = *cantidad_actual;
-    size_t fin = (inicio + 5 < cantidad_total) ? inicio + 5 : cantidad_total;
+    size_t fin = (inicio + 6 < cantidad_total) ? inicio + 6 : cantidad_total;
     size_t tarjetas_a_mostrar = fin - inicio;
 
     printf(ANSI_COLOR_RESET);
