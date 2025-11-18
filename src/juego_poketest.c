@@ -198,6 +198,13 @@ bool evaluar_cartas(juego_poketest_t *juego_poketest, int carta_1, int carta_2, 
 
     struct pokemon *pokemon_1 = _pokemon_1;
     struct pokemon *pokemon_2 = _pokemon_2;
+    sleep(1);
+    printf(ANSI_COLOR_BOLD "\n        Cartas Seleccionadas:\n" ANSI_COLOR_RESET);
+    sleep(1);
+    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_1, pokemon_1->nombre);
+    sleep(1);
+    printf(ANSI_COLOR_CYAN"            %d: %s" ANSI_COLOR_RESET "\n", carta_2, pokemon_2->nombre);
+    sleep(1);
 
     if (comparador_pokemones(pokemon_1, pokemon_2) == 0)
         return true;
@@ -210,15 +217,15 @@ void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
     if (!juego_poketest || !juego_poketest->archivo_pokemones || !juego_poketest->pokemones_juego)
         return;
 
-    printf(ANSI_COLOR_BOLD FIN_JUEGO ANSI_COLOR_RESET"\n");
+    printf(ANSI_COLOR_BOLD FIN_JUEGO ANSI_COLOR_RESET"\n\n");
     printf(ANSI_COLOR_BOLD "Resultados:" ANSI_COLOR_RESET "\n");
     printf(ANSI_COLOR_BOLD JUGADOR_1": %ld" ANSI_COLOR_RESET "\n", juego_poketest->jugador_1.puntaje);
     printf(ANSI_COLOR_BOLD JUGADOR_2": %ld" ANSI_COLOR_RESET "\n", juego_poketest->jugador_2.puntaje);
 
     if (juego_poketest->jugador_1.puntaje > juego_poketest->jugador_2.puntaje)
-        printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD "\n Ganador: " JUGADOR_1 ANSI_COLOR_RESET "\n");
+        printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD "\n" MENSAJE_GANADOR JUGADOR_1 ANSI_COLOR_RESET"\n\n\n");
     else if (juego_poketest->jugador_1.puntaje < juego_poketest->jugador_2.puntaje)
-        printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD "\n Ganador: " JUGADOR_2 ANSI_COLOR_RESET "\n");
+        printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD "\n" MENSAJE_GANADOR JUGADOR_2 ANSI_COLOR_RESET "\n\n\n");
     else
         printf(ANSI_COLOR_MAGENTA ANSI_COLOR_BOLD EMPATE ANSI_COLOR_RESET "\n");
     printf(ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
@@ -284,6 +291,7 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
     size_t cantidad_rojos = 0;
     while (cantidad_rojos < juego_poketest->cantidad_tarjetas) {
         limpiar_pantalla_juego();
+        printf("\n"ANSI_COLOR_BOLD INICIO_JUEGO ANSI_COLOR_RESET"\n\n");
         size_t cantidad_actual = 0;
         while (cantidad_actual < juego_poketest->cantidad_tarjetas) {
             mostrar_tarjetas(&cantidad_actual, juego_poketest->cantidad_tarjetas, tarjetas);

@@ -79,7 +79,8 @@ bool cargar_archivo(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 	
-	getchar();
+	limpiar_pantalla_tp2();
+	printf(ANSI_COLOR_BLUE MENSAJE_CARGAR_ARCHIVO ANSI_COLOR_RESET "\n\n");
 	printf(ANSI_COLOR_BLUE MENSAJE_INSTRUCCION_ARCHIVO ANSI_COLOR_RESET "\n");
 	printf(ANSI_COLOR_MAGENTA MENSAJE_VOLVER ANSI_COLOR_RESET "\n\n");
 	
@@ -344,6 +345,8 @@ bool cambiar_estilo(void *ctx)
 
 	menu_poketest_t *juego__poketest = ctx;
 	
+	limpiar_pantalla_tp2();
+	sleep(1);
 	printf(ANSI_COLOR_BLUE MENSAJE_ESTILO ANSI_COLOR_RESET "\n");
 	esperar_segundos(2);
 	if (juego__poketest->formato == FORMATO_1)
