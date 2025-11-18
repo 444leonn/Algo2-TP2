@@ -10,15 +10,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+
+enum color_tarjeta {COLOR_AZUL, COLOR_ROJO};
+
+typedef struct tarjeta {
+    int id;
+    enum color_tarjeta color_actual;
+    void *valor;
+} tarjeta_t;  
+
+typedef struct registro_historial {
+    char *registro;
+    int primer_carta, segunda_carta;
+    bool resultado;
+} registro_historial_t;
+
 typedef struct jugador {
     size_t puntaje;
 } jugador_t;
 
 typedef struct juego_poketest {
     tp1_t *archivo_pokemones;
-    abb_t *pokemones_juego;
     lista_t *historial;
-    void **vector_1, **vector_2;
+    tarjeta_t *tarjetas;
     size_t semilla;
     size_t cantidad_cargada;
     size_t cantidad_tarjetas;
@@ -28,8 +42,7 @@ typedef struct juego_poketest {
 
 /*
 *   Crea una estructura de juego poketest con la semilla inicial dada.
-*   Si la semilla dada es menor a 3 lo crea con ese valor como semilla.
-*   Y si el archivo contiene menos de 3 pokemones no lo crea.
+*   Si la semilla dada es menor a 9 lo crea con ese valor como semilla.
 *   Devuelve NULL en caso de error o la estructura en caso de exito.
 */
 juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, size_t semilla);
