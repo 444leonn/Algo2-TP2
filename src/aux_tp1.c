@@ -213,14 +213,7 @@ int comparador_nombre(struct pokemon un_pokemon, struct pokemon otro_pokemon)
 
 int comparador_id(struct pokemon un_pokemon, struct pokemon otro_pokemon)
 {
-	if (un_pokemon.id > otro_pokemon.id)
-		return 1;
-	if (un_pokemon.id < otro_pokemon.id)
-		return -1;
-	if (un_pokemon.id == otro_pokemon.id)
-		return 0;
-
-	return 0;
+	return un_pokemon.id - otro_pokemon.id;
 }
 
 void ordenar_pokemones(struct pokemon *pokemones, size_t cantidad_pokemones,

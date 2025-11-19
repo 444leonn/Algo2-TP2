@@ -51,7 +51,8 @@
 #define MENSAJE_SELECCION_CARTA_1 "Seleccione una Carta:  "
 #define MENSAJE_SELECCION_CARTA_2 "Selecciona otra Carta:  "
 #define INTENTE_NUEVAMENTE "Intente ingresar una opcion valida."
-#define MENSAJE_INSTRUCCION_ARCHIVO "Ingrese el path de un archivo en formato .csv.\nEl cual contenga pokemones que desee cargar para el juego."
+#define MENSAJE_INSTRUCCION_ARCHIVO \
+	"Ingrese el path de un archivo en formato .csv.\nEl cual contenga pokemones que desee cargar para el juego."
 #define MENSAJE_SEMILLA "Ingrese una semilla para comenzar el juego:  "
 #define MENSAJE_ARCHIVO "Ingrese el nombre de un archivo (path):  "
 #define MENSAJE_CARGADO "Archivo Cargado Correctamente."
@@ -62,14 +63,18 @@
 #define MENSAJE_INGRESAR_ID "Ingrese el ID de un pokemon:  "
 #define MENSAJE_INGRESAR_NOMBRE "Ingrese el NOMBRE de un pokemon:  "
 #define MENSAJE_POKEMON_ENCONTRADO "Pokemon Encontrado: "
-#define INICIO_JUEGO           "===================  INICIO DEL JUEGO  ==================="
-#define FIN_JUEGO			   "===================    FIN DEL JUEGO   ==================="
-#define MENSAJE_CARGAR_ARCHIVO "====================  CARGAR ARCHIVO  ===================="
+#define INICIO_JUEGO \
+	"                            ===================  INICIO DEL JUEGO  ==================="
+#define FIN_JUEGO "===================    FIN DEL JUEGO   ==================="
+#define MENSAJE_CARGAR_ARCHIVO \
+	"====================  CARGAR ARCHIVO  ===================="
 #define MENSAJE_GANADOR "Ganador: "
 #define EMPATE "Empate Felicitaciones a Ambos Jugadores!"
 
 // OPCIONES JUEGO
 #define MENU_ANTERIOR "Volver al Menu Anterior"
+#define CHAR_A 'A'
+#define VOLVER_MENU "Menú anterior: Vuelve al menú anterior"
 
 #define CHAR_C 'C'
 #define CARGAR_ARCHIVO "Cargar Archivo"
@@ -102,6 +107,5 @@
 #define JUGADOR_2 "Jugador 2"
 
 #define CANTIDAD_TARJETAS 18
-
 
 #endif // CONSTANTES_H_

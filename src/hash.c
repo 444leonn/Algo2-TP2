@@ -78,7 +78,7 @@ int funcion_hash(char *clave, size_t capacidad_tabla)
 
 	unsigned long clave_hasheada = hash_djb2(clave);
 
-    return (int)(clave_hasheada % capacidad_tabla);
+	return (int)(clave_hasheada % capacidad_tabla);
 }
 
 /*
