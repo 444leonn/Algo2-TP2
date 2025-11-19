@@ -19,33 +19,19 @@ typedef struct tarjeta {
 	struct pokemon *valor;
 } tarjeta_t;
 
-typedef struct registro_historial {
-	char *registro;
-	int primer_carta, segunda_carta;
-	bool resultado;
-} registro_historial_t;
+typedef struct registro_historial registro_historial_t;
 
-typedef struct jugador {
-	size_t puntaje;
-} jugador_t;
+typedef struct jugador jugador_t;
 
-typedef struct juego_poketest {
-	tp1_t *archivo_pokemones;
-	lista_t *historial;
-	tarjeta_t *tarjetas;
-	int semilla;
-	size_t cantidad_cargada;
-	size_t cantidad_tarjetas;
-	jugador_t jugador_1, jugador_2;
-	bool turno_jugador_1;
-} juego_poketest_t;
+typedef struct juego_poketest juego_poketest_t;
 
 /*
 *   Crea una estructura de juego poketest con la semilla inicial dada.
-*   Si la semilla dada es menor a 9 lo crea con ese valor como semilla.
+*	Si la semilla es 0, genera una de manera aleatoria.
 *   Devuelve NULL en caso de error o la estructura en caso de exito.
 */
-juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, int semilla);
+juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, int semilla,
+				       size_t cantidad_tarjetas);
 
 /*
 *   Carga cierto contenido del archivo de pokemones para usar en el juego.

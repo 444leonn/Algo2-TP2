@@ -27,7 +27,6 @@ struct menu {
 	size_t cantidad;
 	size_t largo_nombre;
 	size_t largo_opcion;
-	size_t largo_mayor;
 };
 
 char *copiar_nombre_aux(char *clave)
@@ -65,7 +64,6 @@ menu_t *menu_crear(char *nombre)
 	if (nombre != NULL) {
 		menu->nombre = copiar_nombre_aux(nombre);
 		menu->largo_nombre = strlen(nombre);
-		menu->largo_mayor = strlen(nombre);
 		menu->tiene_nombre = true;
 	}
 
@@ -77,7 +75,7 @@ menu_t *menu_crear(char *nombre)
 		return NULL;
 	}
 	menu->formato_custom.formato_custom = NULL;
-    menu->formato = FORMATO_1;
+	menu->formato = FORMATO_1;
 
 	return menu;
 }
@@ -103,11 +101,6 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 	if (largo_evaluar > menu->largo_opcion && resultado == true)
 		menu->largo_opcion = largo_evaluar;
 
-	if (resultado == true)
-		menu->largo_mayor = (menu->largo_nombre > menu->largo_opcion) ?
-					    menu->largo_nombre :
-					    menu->largo_opcion;
-
 	return resultado;
 }
 
@@ -121,10 +114,10 @@ void menu_agregar_formato(menu_t *menu, void (*f_formato)(char, char *))
 
 bool menu_seleccionar_formato(menu_t *menu, enum formato_muestra formato)
 {
-    if (menu == NULL)
-        return false;
-    menu->formato = formato;
-    return true;
+	if (menu == NULL)
+		return false;
+	menu->formato = formato;
+	return true;
 }
 
 void mostrar_linea_iguales(size_t cantidad)
@@ -146,7 +139,7 @@ void mostrar_linea_palabra(size_t cantidad, char *palabra,
 {
 	printf(ANSI_COLOR_BOLD "|" ANSI_COLOR_RESET);
 	size_t j = 0;
-	for (int i = 0; i < cantidad + 3; i++) {
+	for (int i = 0; i < cantidad + 2; i++) {
 		printf(" ");
 		j++;
 	}
@@ -171,7 +164,7 @@ void menu_mostrar_nombre(menu_t *menu)
 	if (menu == NULL || menu->tiene_nombre == false)
 		return;
 
-	size_t cantidad_iguales = menu->largo_mayor * 4;
+	size_t cantidad_iguales = menu->largo_nombre * 4;
 	size_t cantidad_espacios = cantidad_iguales - 2;
 	size_t cantidad_espacios_impresion = cantidad_iguales / 3;
 

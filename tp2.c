@@ -18,6 +18,7 @@ enum MENUS { MENU_PRINCIPAL, MENU_BUSQUEDA, MENU_MUESTRA };
 typedef struct menu_poketest {
 	menu_t *menu[CANTIDAD_MENUS];
 	int semilla;
+	size_t cantidad_tarjetas;
 	enum formato_muestra formato;
 	tp1_t *archivo_pokemones;
 	bool salir;
@@ -335,7 +336,8 @@ bool jugar(void *ctx)
 	menu_poketest_t *menu_poketest = ctx;
 
 	juego_poketest_t *juego_poketest = juego_poketest_crear(
-		menu_poketest->archivo_pokemones, menu_poketest->semilla);
+		menu_poketest->archivo_pokemones, menu_poketest->semilla,
+		menu_poketest->cantidad_tarjetas);
 	if (juego_poketest == NULL) {
 		mostrar_mensaje_fallo_lectura();
 		return true;
@@ -385,7 +387,8 @@ bool cambiar_estilo(void *ctx)
 		juego_poketest->formato = FORMATO_1;
 
 	for (int i = 0; i < CANTIDAD_MENUS; i++)
-		menu_seleccionar_formato(juego_poketest->menu[i], juego_poketest->formato);
+		menu_seleccionar_formato(juego_poketest->menu[i],
+					 juego_poketest->formato);
 
 	return true;
 }
@@ -425,6 +428,7 @@ menu_poketest_t *menu_poketest_crear()
 		return NULL;
 	}
 	menu_poketest->formato = FORMATO_1;
+	menu_poketest->cantidad_tarjetas = CANTIDAD_TARJETAS;
 
 	return menu_poketest;
 }
@@ -518,7 +522,8 @@ bool menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 			menu_poketest->menu[MENU_PRINCIPAL], opcion_elegida);
 		while (opcion_ejecutada == false) {
 			mostrar_mensaje_opcion_invalida();
-			menu_mostrar_completo(menu_poketest->menu[MENU_PRINCIPAL]);
+			menu_mostrar_completo(
+				menu_poketest->menu[MENU_PRINCIPAL]);
 			opcion_elegida = seleccionar_opcion(
 				menu_poketest->menu[MENU_PRINCIPAL]);
 			opcion_ejecutada = menu_ejecutar_opcion(
@@ -534,9 +539,8 @@ void menu_poketest_destruir(menu_poketest_t *menu_poketest)
 {
 	if (menu_poketest == NULL)
 		return;
-	menu_destruir(menu_poketest->menu[MENU_PRINCIPAL]);
-	menu_destruir(menu_poketest->menu[MENU_BUSQUEDA]);
-	menu_destruir(menu_poketest->menu[MENU_MUESTRA]);
+	for (int i = 0; i < CANTIDAD_MENUS; i++)
+		menu_destruir(menu_poketest->menu[i]);
 	tp1_destruir(menu_poketest->archivo_pokemones);
 	free(menu_poketest);
 }

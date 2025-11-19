@@ -131,7 +131,7 @@ void menu_mostrar_muestra_correctamemte_para_formato_1()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar(menu, FORMATO_1);
+	menu_mostrar(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
@@ -151,7 +151,7 @@ void menu_mostrar_muestra_correctamemte_para_formato_2()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar(menu, FORMATO_2);
+	menu_mostrar(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
@@ -171,7 +171,7 @@ void menu_mostrar_muestra_correctamemte_para_formato_3()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar(menu, FORMATO_3);
+	menu_mostrar(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
@@ -191,7 +191,7 @@ void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_1()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar_completo(menu, FORMATO_1);
+	menu_mostrar_completo(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
@@ -211,7 +211,7 @@ void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_2()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar_completo(menu, FORMATO_2);
+	menu_mostrar_completo(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
@@ -231,7 +231,7 @@ void menu_mostrar_completo_muestra_el_menu_correctamente_para_formato_3()
 	menu_agregar_opcion(menu, CHAR_E, ESTILO, funcion_prueba_menu, NULL);
 	menu_agregar_opcion(menu, CHAR_Q, SALIR, funcion_prueba_menu, NULL);
 
-	menu_mostrar_completo(menu, FORMATO_3);
+	menu_mostrar_completo(menu);
 
 	if (menu != NULL)
 		menu_destruir(menu);
