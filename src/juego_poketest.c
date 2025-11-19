@@ -3,6 +3,13 @@
 #include <string.h>
 #include <time.h>
 
+struct tarjeta {
+	size_t numero_tarjeta;
+	int id_pokemon;
+	enum color_tarjeta color_actual;
+	struct pokemon *valor;
+};
+
 struct registro_historial {
 	char *registro;
 	int primer_carta, segunda_carta;
@@ -210,7 +217,7 @@ bool juego_poketest_cargar(juego_poketest_t *juego_poketest)
 	return true;
 }
 
-void seleccionar_tarjeta(juego_poketest_t *juego_poketest, int *carta_1,
+void seleccionar_tarjetas(juego_poketest_t *juego_poketest, int *carta_1,
 			 int *carta_2)
 {
 	if (juego_poketest == NULL || carta_1 == NULL || carta_2 == NULL)
@@ -362,7 +369,7 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
 			      juego_poketest->historial);
 
 		int carta_1 = POSICION_INVALIDA, carta_2 = POSICION_INVALIDA;
-		seleccionar_tarjeta(juego_poketest, &carta_1, &carta_2);
+		seleccionar_tarjetas(juego_poketest, &carta_1, &carta_2);
 		bool resultado =
 			evaluar_tarjetas(juego_poketest, carta_1, carta_2);
 
