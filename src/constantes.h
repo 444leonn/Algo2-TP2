@@ -91,7 +91,6 @@
 
 #define CHAR_S 'S'
 #define JUGAR_SEMILLA "Jugar con Semilla"
-#define CANTIDAD_SEMILLA 9
 
 #define CHAR_E 'E'
 #define ESTILO "Cambiar Estilo"
@@ -102,6 +101,7 @@
 #define JUGADOR_1 "Jugador 1"
 #define JUGADOR_2 "Jugador 2"
 
+#define CANTIDAD_TARJETAS 18
 
 
 #endif // CONSTANTES_H_
