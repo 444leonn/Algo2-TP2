@@ -3,10 +3,15 @@
 
 #include "hash.h"
 
-enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3 }; 
+enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3, FORMATO_CUSTOM };
+
+typedef struct formato_custom {
+    void (*formato_custom)(void *);
+} formato_custom_t;
 
 // Estructura para almacenar cada opcion dentro de la tabla de hash de opciones
 typedef struct opcion {
+    char clave;
     char *descripcion;
     bool (*funcion)(void *);
     void *ctx;
@@ -48,12 +53,6 @@ void menu_mostrar_nombre(menu_t *menu);
 *   Si el menu es NULL, no se muestra nada.
 */
 void menu_mostrar(menu_t *menu, enum formato_muestra formato);
-
-/*
-*   Permite seleccionar una opcion.
-*   En caso de error devuelve caracter nulo '\0'
-*/
-char menu_seleccionar_opcion(menu_t *menu);
 
 /*
 *   Ejecuta una opcion seleccionada una opcion del menu y ejecuta la funcion que debe realizar.

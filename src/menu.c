@@ -130,6 +130,7 @@ void menu_mostrar_nombre(menu_t *menu)
     printf("\n");
 }
 
+// TODO: Agregar la opcion de que el usuario pueda usar su propio estilo.
 bool menu_mostrar_opcion(char *clave, void *_opcion, void *_ctx)
 {
     opcion_t *opcion = _opcion;
@@ -169,27 +170,8 @@ void menu_mostrar(menu_t *menu, enum formato_muestra formato)
     hash_iterar(menu->opciones, menu_mostrar_opcion, &formato);
 }
 
-char menu_seleccionar_opcion(menu_t *menu)
-{
-    if (menu == NULL)
-        return '\0';
+// NOTE: Sacar esto, ponerlo en el main, el menu no debe manejar eso.
 
-    size_t cantidad_iguales = menu->largo_mayor * 4;
-    mostrar_linea_iguales(cantidad_iguales);
-    printf("\n");
-
-    printf(ANSI_COLOR_BOLD MENSAJE_SELECCION ANSI_COLOR_RESET);
-    int aux = fgetc(stdin);
-    int siguiente = fgetc(stdin);
-    if ((char)siguiente != '\n' && (char)siguiente != EOF) {
-        ungetc(siguiente, stdin);
-    }
-
-    char c = (char)aux;
-    printf("\n");
-
-    return c;
-}
 
 bool menu_ejecutar_opcion(menu_t *menu, char c)
 {
