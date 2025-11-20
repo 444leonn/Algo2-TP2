@@ -218,7 +218,7 @@ bool juego_poketest_cargar(juego_poketest_t *juego_poketest)
 }
 
 void seleccionar_tarjetas(juego_poketest_t *juego_poketest, int *carta_1,
-			 int *carta_2)
+			  int *carta_2)
 {
 	if (juego_poketest == NULL || carta_1 == NULL || carta_2 == NULL)
 		return;
@@ -229,12 +229,12 @@ void seleccionar_tarjetas(juego_poketest_t *juego_poketest, int *carta_1,
 		printf("\n" ANSI_COLOR_BOLD JUGADOR_2 ANSI_COLOR_RESET "\n");
 
 	printf(MENSAJE_SELECCION_CARTA_1);
-	scanf("%d", carta_1);
-	limpiar_buffer_juego();
+	if (scanf("%d", carta_1) != 1)
+		limpiar_buffer_juego();
 
 	printf(MENSAJE_SELECCION_CARTA_2);
-	scanf("%d", carta_2);
-	limpiar_buffer_juego();
+	if (scanf("%d", carta_2) != 1)
+		limpiar_buffer_juego();
 }
 
 bool evaluar_tarjetas(juego_poketest_t *juego_poketest, int carta_1,
