@@ -20,7 +20,6 @@ typedef struct opcion {
 
 struct menu {
 	char *nombre;
-	bool tiene_nombre;
 	hash_t *opciones;
 	formato_custom_t formato_custom;
 	enum formato_muestra formato;
@@ -64,13 +63,12 @@ menu_t *menu_crear(char *nombre)
 	if (nombre != NULL) {
 		menu->nombre = copiar_nombre_aux(nombre);
 		menu->largo_nombre = strlen(nombre);
-		menu->tiene_nombre = true;
 	}
 
 	menu->opciones = hash_crear(CAPACIDAD_TABLA);
-	if (menu->opciones == NULL ||
-	    (menu->nombre == NULL && menu->tiene_nombre == true)) {
-		free(menu->nombre);
+	if (menu->opciones == NULL) {
+		if (menu->nombre != NULL)
+			free(menu->nombre);
 		free(menu);
 		return NULL;
 	}
@@ -102,6 +100,12 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 		menu->largo_opcion = largo_evaluar;
 
 	return resultado;
+}
+
+bool menu_quitar_opcion(menu_t *menu, char c)
+{
+	char _c[] = { c, '\0' };
+	return hash_quitar(menu->opciones, _c);
 }
 
 void menu_agregar_formato(menu_t *menu, void (*f_formato)(char, char *))
@@ -161,7 +165,7 @@ void mostrar_linea_palabra(size_t cantidad, char *palabra,
 
 void menu_mostrar_nombre(menu_t *menu)
 {
-	if (menu == NULL || menu->tiene_nombre == false)
+	if (menu == NULL || menu->nombre == NULL)
 		return;
 
 	size_t cantidad_iguales = menu->largo_nombre * 4;

@@ -24,6 +24,13 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 			 bool (*funcion)(void *), void *ctx);
 
 /*
+*	Quita una opcion del menu.
+*	Recibiendo el caracter con el que se identifica aquella opcion.
+*	Devuelve true si se logro quitar la opcion. Devuelve false en caso contrario.
+*/
+bool menu_quitar_opcion(menu_t *menu, char c);
+
+/*
 *   Permite agregar un formato de muestra para el menu.
 *   Recibe el caracter que identifica la opcion y la descripcion de esa opcion.
 */
