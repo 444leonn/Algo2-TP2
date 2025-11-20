@@ -335,6 +335,9 @@ bool jugar(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
+	if (validar_archivo_pokemones(menu_poketest) == true)
+		return true;
+
 	juego_poketest_t *juego_poketest = juego_poketest_crear(
 		menu_poketest->archivo_pokemones, menu_poketest->semilla,
 		menu_poketest->cantidad_tarjetas);
