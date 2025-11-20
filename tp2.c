@@ -4,14 +4,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "src/tp1.h"
 #include "src/aux_tp1.h"
+#include "src/abb.h"
 #include "src/juego_poketest.h"
 #include "src/menu.h"
-
-typedef struct aux_pokemones {
-	struct pokemon *pokemones;
-	size_t cantidad;
-} aux_pokemones_t;
 
 enum MENUS { MENU_PRINCIPAL, MENU_BUSQUEDA, MENU_MUESTRA };
 
@@ -21,6 +18,7 @@ typedef struct menu_poketest {
 	size_t cantidad_tarjetas;
 	enum formato_muestra formato;
 	tp1_t *archivo_pokemones;
+	abb_t *abb_pokemones_nombre;
 	bool salir;
 } menu_poketest_t;
 
@@ -112,23 +110,6 @@ char *leer_nombre_archivo()
 	return nombre;
 }
 
-bool agregar_aux_pokemon(struct pokemon *pokemon, void *_aux_pokemones)
-{
-	if (_aux_pokemones == NULL)
-		return false;
-
-	aux_pokemones_t *aux_pokemones = _aux_pokemones;
-	aux_pokemones->pokemones[aux_pokemones->cantidad] = *pokemon;
-
-	size_t tamaño = strlen(pokemon->nombre) + 1;
-	aux_pokemones->pokemones[aux_pokemones->cantidad].nombre =
-		copiar_nombre(tamaño, pokemon->nombre);
-
-	aux_pokemones->cantidad++;
-
-	return true;
-}
-
 bool cargar_archivo(void *ctx)
 {
 	if (ctx == NULL)
@@ -196,33 +177,41 @@ bool buscar_nombre(void *ctx)
 	return true;
 }
 
+bool mostrar_pokemon_abb(void *_pokemon, void *extra)
+{
+	struct pokemon *pokemon = _pokemon;
+
+	char *tipo = parsear_tipo(pokemon->tipo);
+
+	printf("| ID: %d | NOMBRE: %s | TIPO: %s | ATAQUE: %d | DEFENSA: %d | VELOCIDAD: %d |\n",
+	       pokemon->id, pokemon->nombre, tipo, pokemon->ataque,
+	       pokemon->defensa, pokemon->velocidad);
+
+	return true;
+}
+
+int comparador_pokemones_nombre(const void *_pokemon_a, const void *_pokemon_b)
+{
+	const struct pokemon *pokemon_a = _pokemon_a;
+	const struct pokemon *pokemon_b = _pokemon_b;
+
+	return strcmp(pokemon_a->nombre, pokemon_b->nombre);
+}
+
+bool cargar_pokemones_abb(struct pokemon *pokemon, void *_abb)
+{
+	abb_t *abb = _abb;
+	return abb_insertar(abb, pokemon);
+}
+
 bool mostrar_nombre(void *ctx)
 {
 	if (ctx == NULL)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
-
-	aux_pokemones_t aux_pokemones;
-	aux_pokemones.cantidad = 0;
-	size_t cantidad_total = tp1_cantidad(menu_poketest->archivo_pokemones);
-	aux_pokemones.pokemones =
-		malloc(cantidad_total * sizeof(struct pokemon));
-
-	if (aux_pokemones.pokemones != NULL) {
-		tp1_con_cada_pokemon(menu_poketest->archivo_pokemones,
-				     agregar_aux_pokemon, &aux_pokemones);
-
-		ordenar_pokemones(aux_pokemones.pokemones,
-				  aux_pokemones.cantidad, comparador_nombre);
-		for (int i = 0; i < aux_pokemones.cantidad; i++) {
-			mostrar_pokemon(&aux_pokemones.pokemones[i], NULL);
-			free(aux_pokemones.pokemones[i].nombre);
-		}
-
-		free(aux_pokemones.pokemones);
-	}
-	printf("\n" ANSI_COLOR_BLUE MENSAJE_CONTINUAR ANSI_COLOR_RESET);
-	getchar();
+	
+	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones, cargar_pokemones_abb, menu_poketest->abb_pokemones_nombre);
+	abb_con_cada_elemento(menu_poketest->abb_pokemones_nombre, ABB_INORDEN, mostrar_pokemon_abb, NULL);
 
 	return true;
 }
@@ -366,8 +355,8 @@ bool jugar_semilla(void *ctx)
 	menu_poketest_t *menu_poketest = ctx;
 
 	printf(ANSI_COLOR_BOLD MENSAJE_SEMILLA ANSI_COLOR_RESET);
-	scanf("%d", &menu_poketest->semilla);
-	limpiar_buffer();
+	if (scanf("%d", &menu_poketest->semilla) != 1)
+		limpiar_buffer();
 
 	return jugar(menu_poketest);
 }
@@ -418,15 +407,21 @@ menu_poketest_t *menu_poketest_crear()
 	menu_poketest_t *menu_poketest = calloc(1, sizeof(menu_poketest_t));
 	if (menu_poketest == NULL)
 		return NULL;
+	bool reservado = true;
+
 	menu_poketest->menu[MENU_PRINCIPAL] = menu_crear(NOMBRE_JUEGO);
 	menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
 	menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
+	menu_poketest->abb_pokemones_nombre = abb_crear(comparador_pokemones_nombre);
 
-	if (!menu_poketest->menu[MENU_PRINCIPAL] ||
-	    !menu_poketest->menu[MENU_BUSQUEDA] ||
-	    !menu_poketest->menu[MENU_MUESTRA]) {
+	for (int i = 0; i < CANTIDAD_MENUS; i++)
+		if (menu_poketest->menu[i] == NULL)
+			reservado = false;
+			
+	if (reservado == false || menu_poketest->abb_pokemones_nombre == NULL) {
 		for (int i = 0; i < CANTIDAD_MENUS; i++)
 			menu_destruir(menu_poketest->menu[i]);
+		abb_destruir(menu_poketest->abb_pokemones_nombre);
 		free(menu_poketest);
 		return NULL;
 	}
