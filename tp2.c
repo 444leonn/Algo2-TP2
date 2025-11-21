@@ -166,9 +166,12 @@ bool mostrar_nombre(void *ctx)
 	if (ctx == NULL)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
-	
-	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones, cargar_pokemones_abb, menu_poketest->abb_pokemones_nombre);
-	abb_con_cada_elemento(menu_poketest->abb_pokemones_nombre, ABB_INORDEN, mostrar_pokemon_abb, NULL);
+
+	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones,
+			     cargar_pokemones_abb,
+			     menu_poketest->abb_pokemones_nombre);
+	abb_con_cada_elemento(menu_poketest->abb_pokemones_nombre, ABB_INORDEN,
+			      mostrar_pokemon_abb, NULL);
 	mostrar_mensaje_continuar();
 
 	return true;
@@ -287,7 +290,8 @@ bool cambiar_estilo(void *ctx)
 		juego_poketest->formato = FORMATO_1;
 
 	for (int i = 0; i < CANTIDAD_MENUS; i++)
-		menu_seleccionar_formato(juego_poketest->menu[i], juego_poketest->formato);
+		menu_seleccionar_formato(juego_poketest->menu[i],
+					 juego_poketest->formato);
 
 	return true;
 }
@@ -319,12 +323,13 @@ menu_poketest_t *menu_poketest_crear()
 	menu_poketest->menu[MENU_PRINCIPAL] = menu_crear(NOMBRE_JUEGO);
 	menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
 	menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
-	menu_poketest->abb_pokemones_nombre = abb_crear(comparador_pokemones_nombre);
+	menu_poketest->abb_pokemones_nombre =
+		abb_crear(comparador_pokemones_nombre);
 
 	for (int i = 0; i < CANTIDAD_MENUS; i++)
 		if (menu_poketest->menu[i] == NULL)
 			reservado = false;
-			
+
 	if (reservado == false || menu_poketest->abb_pokemones_nombre == NULL) {
 		for (int i = 0; i < CANTIDAD_MENUS; i++)
 			menu_destruir(menu_poketest->menu[i]);
@@ -338,7 +343,8 @@ menu_poketest_t *menu_poketest_crear()
 	return menu_poketest;
 }
 
-bool construir_menu_principal(menu_t *menu_principal, menu_poketest_t *menu_poketest)
+bool construir_menu_principal(menu_t *menu_principal,
+			      menu_poketest_t *menu_poketest)
 {
 	if (menu_principal == NULL || menu_poketest == NULL)
 		return false;
@@ -364,26 +370,36 @@ bool construir_menu_principal(menu_t *menu_principal, menu_poketest_t *menu_poke
 	return resultado;
 }
 
-bool construir_menu_busqueda(menu_t *menu_busqueda, menu_poketest_t *menu_poketest)
+bool construir_menu_busqueda(menu_t *menu_busqueda,
+			     menu_poketest_t *menu_poketest)
 {
 	if (menu_busqueda == NULL || menu_poketest == NULL)
 		return false;
-	bool opcion_1 = menu_agregar_opcion(menu_busqueda, CHAR_N, BUSCAR_NOMBRE, buscar_nombre, menu_poketest);
-	bool opcion_2 = menu_agregar_opcion(menu_busqueda, CHAR_I, BUSCAR_ID, buscar_id, menu_poketest);
-	bool opcion_3 = menu_agregar_opcion(menu_busqueda, CHAR_A, VOLVER_MENU, volver_menu, menu_poketest);
+	bool opcion_1 = menu_agregar_opcion(menu_busqueda, CHAR_N,
+					    BUSCAR_NOMBRE, buscar_nombre,
+					    menu_poketest);
+	bool opcion_2 = menu_agregar_opcion(menu_busqueda, CHAR_I, BUSCAR_ID,
+					    buscar_id, menu_poketest);
+	bool opcion_3 = menu_agregar_opcion(menu_busqueda, CHAR_A, VOLVER_MENU,
+					    volver_menu, menu_poketest);
 
 	bool resultado = opcion_1 && opcion_2 && opcion_3;
 
 	return resultado;
 }
 
-bool construir_menu_mostrar(menu_t *menu_muestra, menu_poketest_t *menu_poketest)
+bool construir_menu_mostrar(menu_t *menu_muestra,
+			    menu_poketest_t *menu_poketest)
 {
 	if (menu_muestra == NULL || menu_poketest == NULL)
 		return false;
-	bool opcion_1 = menu_agregar_opcion(menu_muestra, CHAR_N, MOSTRAR_NOMBRE, mostrar_nombre, menu_poketest);
-	bool opcion_2 = menu_agregar_opcion(menu_muestra, CHAR_I, MOSTRAR_ID, mostrar_id, menu_poketest);
-	bool opcion_3 = menu_agregar_opcion(menu_muestra, CHAR_A, VOLVER_MENU, volver_menu, menu_poketest);
+	bool opcion_1 = menu_agregar_opcion(menu_muestra, CHAR_N,
+					    MOSTRAR_NOMBRE, mostrar_nombre,
+					    menu_poketest);
+	bool opcion_2 = menu_agregar_opcion(menu_muestra, CHAR_I, MOSTRAR_ID,
+					    mostrar_id, menu_poketest);
+	bool opcion_3 = menu_agregar_opcion(menu_muestra, CHAR_A, VOLVER_MENU,
+					    volver_menu, menu_poketest);
 
 	bool resultado = opcion_1 && opcion_2 && opcion_3;
 
@@ -394,9 +410,12 @@ bool menu_poketest_construir(menu_poketest_t *menu_poketest)
 {
 	if (menu_poketest == NULL)
 		return false;
-	bool resultado_principal = construir_menu_principal(menu_poketest->menu[MENU_PRINCIPAL], menu_poketest);
-	bool resultado_buscar = construir_menu_busqueda(menu_poketest->menu[MENU_BUSQUEDA], menu_poketest);
-	bool resultado_mostrar = construir_menu_mostrar(menu_poketest->menu[MENU_MUESTRA], menu_poketest);
+	bool resultado_principal = construir_menu_principal(
+		menu_poketest->menu[MENU_PRINCIPAL], menu_poketest);
+	bool resultado_buscar = construir_menu_busqueda(
+		menu_poketest->menu[MENU_BUSQUEDA], menu_poketest);
+	bool resultado_mostrar = construir_menu_mostrar(
+		menu_poketest->menu[MENU_MUESTRA], menu_poketest);
 
 	return resultado_principal && resultado_buscar && resultado_mostrar;
 }
