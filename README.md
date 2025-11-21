@@ -165,6 +165,8 @@ Este módulo recibe la estructura previamente creada y se encarga de cargar todo
 
 Muestra el menú principal y pide el ingreso de una opción dentro de las disponibles, se utiliza la variable de salida como condición de corte, lo cual permite ir mostrando el menu luego de cada opción.
 
+Utiliza la funcion `menu_ejecutar` que permite mostrar el menu y solicitar el reingreso de la opcion si la misma es invalida. Esta funcion tambien es utilizada en las operaciones que implican mostrar el menu de busqueda o el menu de muestra de los pokemones.
+
 #### **Destruir**
 
 Se encarga de liberar la memoria utilizada por las estructuras.
