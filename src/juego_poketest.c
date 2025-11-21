@@ -1,5 +1,10 @@
 #include "juego_poketest.h"
 
+#include "ansi.h"
+#include "constantes.h"
+#include "aux.h"
+#include "lista.h"
+
 #include <string.h>
 #include <time.h>
 
@@ -246,16 +251,16 @@ bool evaluar_tarjetas(juego_poketest_t *juego_poketest, int carta_1,
 	else if (carta_1 == carta_2)
 		return false;
 
-	sleep(1);
+	esperar_segundos(1);
 	printf(ANSI_COLOR_BOLD
 	       "\n        Cartas Seleccionadas:\n" ANSI_COLOR_RESET);
-	sleep(1);
+	esperar_segundos(1);
 	printf(ANSI_COLOR_CYAN "            %d: %s" ANSI_COLOR_RESET "\n",
 	       carta_1, juego_poketest->tarjetas[carta_1].valor->nombre);
-	sleep(1);
+	esperar_segundos(1);
 	printf(ANSI_COLOR_CYAN "            %d: %s" ANSI_COLOR_RESET "\n",
 	       carta_2, juego_poketest->tarjetas[carta_2].valor->nombre);
-	sleep(1);
+	esperar_segundos(1);
 
 	if (comparador_pokemones(juego_poketest->tarjetas[carta_1].valor,
 				 juego_poketest->tarjetas[carta_2].valor) == 0)
@@ -412,6 +417,7 @@ bool juego_poketest_jugar(juego_poketest_t *juego_poketest)
 		      juego_poketest->cantidad_tarjetas,
 		      juego_poketest->historial);
 	juego_poketest_mostrar_resultados(juego_poketest);
+	mostrar_mensaje_continuar();
 
 	return true;
 }

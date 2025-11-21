@@ -1,14 +1,11 @@
 #ifndef __JUEGO_POKETEST_H__
 #define __JUEGO_POKETEST_H__
 
-#include "ansi.h"
-#include "constantes.h"
 #include "tp1.h"
-#include "lista.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
 
 enum color_tarjeta { COLOR_AZUL, COLOR_ROJO };
 
