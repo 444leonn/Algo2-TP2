@@ -106,7 +106,7 @@ char *leer_nombre_archivo()
 	return nombre;
 }
 
-bool mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux)
+bool mostrar_formato_1(char *clave, void *_opcion, void *aux)
 {
 	if (clave == NULL || _opcion == NULL)
 		return false;
@@ -119,7 +119,7 @@ bool mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux)
 	return true;
 }
 
-bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux)
+bool mostrar_formato_2(char *clave, void *_opcion, void *aux)
 {
 	if (clave == NULL || _opcion == NULL)
 		return false;
@@ -134,7 +134,7 @@ bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux)
 	return true;
 }
 
-bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
+bool mostrar_formato_3(char *clave, void *_opcion, void *aux)
 {
 	if (clave == NULL || _opcion == NULL)
 		return false;
@@ -178,7 +178,7 @@ void mostrar_nombre_menu(char *nombre)
 
 void mostrar_progreso_juego(float progreso)
 {
-	printf(ANSI_BG_GREEN "Progreso: [ %.0f%]" ANSI_BG_RESET, progreso);
+	printf(ANSI_BG_GREEN "\n\nProgreso: [ %.0f%% ]" ANSI_BG_RESET, progreso);
 	printf(ANSI_COLOR_BOLD "  [" ANSI_COLOR_RESET);
 
 	int i = 0;
@@ -189,7 +189,7 @@ void mostrar_progreso_juego(float progreso)
 			printf(ANSI_COLOR_BOLD "." ANSI_COLOR_RESET);
 	printf(ANSI_COLOR_BOLD "]" ANSI_COLOR_RESET);
 
-	printf("\n");
+	printf("\n\n");
 }
 
 void seleccionar_tarjetas(int *carta_1, int *carta_2)
@@ -199,11 +199,11 @@ void seleccionar_tarjetas(int *carta_1, int *carta_2)
 
 	printf(MENSAJE_SELECCION_CARTA_1);
 	if (scanf("%d", carta_1) != 1)
-		limpiar_buffer_juego();
+		limpiar_buffer();
 
 	printf(MENSAJE_SELECCION_CARTA_2);
 	if (scanf("%d", carta_2) != 1)
-		limpiar_buffer_juego();
+		limpiar_buffer();
 }
 
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b)

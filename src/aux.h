@@ -72,17 +72,17 @@ char *leer_nombre_archivo();
 /*
 *   Muestra una opcion por pantalla.
 */
-bool mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux);
+bool mostrar_formato_1(char *clave, void *_opcion, void *aux);
 
 /*
 *   Muestra una opcion por pantalla.
 */
-bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux);
+bool mostrar_formato_2(char *clave, void *_opcion, void *aux);
 
 /*
 *   Muestra una opcion por pantalla.
 */
-bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux);
+bool mostrar_formato_3(char *clave, void *_opcion, void *aux);
 
 /*
 *   Muestra un string con cierto formato.

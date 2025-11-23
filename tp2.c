@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -27,37 +26,12 @@ typedef struct menu_poketest {
 	bool salir;
 } menu_poketest_t;
 
-void mostrar_nombre_menu(menu_t *menu)
-{
-	if (menu == NULL)
-		return;
-	
-	char *nombre_menu = menu_obtener_nombre(menu);
-	if (nombre_menu != NULL) {
-		size_t largo_menu = strlen(nombre_menu);
-		for (int i = 0; i < largo_menu * 4; i++)
-			printf("=");
-		printf("\n");
-		printf("|");
-		for (int i = 0; i < largo_menu * 4 / 3; i++)
-			printf(" ");
-		printf("%s", nombre_menu);
-		for (int i = 0; i < largo_menu * 4 / 3 + 1; i++)
-			printf(" ");
-		printf("|");
-		printf("\n");
-		for (int i = 0; i < largo_menu * 4; i++)
-			printf("=");
-
-		printf("\n");
-	}
-}
-
 void ejecutar_menu(menu_t *menu, bool (*funcion_muestra)(char *, void *, void *))
 {
 	limpiar_pantalla();
 	
-	mostrar_nombre_menu(menu);
+	char *nombre_menu = menu_obtener_nombre(menu);
+	mostrar_nombre_menu(nombre_menu);
 	menu_mostrar(menu, funcion_muestra);
 	char opcion = seleccionar_opcion();
 	bool ejecutada = menu_ejecutar_opcion(menu, opcion);
@@ -180,14 +154,6 @@ bool mostrar_pokemon_abb(void *_pokemon, void *extra)
 	return true;
 }
 
-int comparador_pokemones_nombre(const void *_pokemon_a, const void *_pokemon_b)
-{
-	const struct pokemon *pokemon_a = _pokemon_a;
-	const struct pokemon *pokemon_b = _pokemon_b;
-
-	return strcmp(pokemon_a->nombre, pokemon_b->nombre);
-}
-
 bool cargar_pokemones_abb(struct pokemon *pokemon, void *_abb)
 {
 	abb_t *abb = _abb;
@@ -249,6 +215,34 @@ bool mostrar(void *ctx)
 	return true;
 }
 
+void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
+{
+	if (juego_poketest == NULL || juego_poketest_progreso(juego_poketest) < 100)
+		return;
+
+	int puntaje_1 = juego_poketest_puntaje(juego_poketest, J1);
+	int puntaje_2 = juego_poketest_puntaje(juego_poketest, J2);
+
+	printf(ANSI_COLOR_BOLD FIN_JUEGO ANSI_COLOR_RESET "\n\n");
+	printf(ANSI_COLOR_BOLD "Resultados:" ANSI_COLOR_RESET "\n");
+	printf(ANSI_COLOR_BOLD JUGADOR_1 ": %d" ANSI_COLOR_RESET "\n", puntaje_1);
+	printf(ANSI_COLOR_BOLD JUGADOR_2 ": %d" ANSI_COLOR_RESET "\n", puntaje_2);
+
+	if (puntaje_1 > puntaje_2)
+		printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD
+		       "\n" MENSAJE_GANADOR JUGADOR_1 ANSI_COLOR_RESET
+		       "\n\n\n");
+	else if (puntaje_1 < puntaje_2)
+		printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD
+		       "\n" MENSAJE_GANADOR JUGADOR_2 ANSI_COLOR_RESET
+		       "\n\n\n");
+	else
+		printf(ANSI_COLOR_MAGENTA ANSI_COLOR_BOLD EMPATE ANSI_COLOR_RESET
+		       "\n");
+
+	mostrar_mensaje_continuar();
+}
+
 bool jugar(void *ctx)
 {
 	if (ctx == NULL)
@@ -256,7 +250,7 @@ bool jugar(void *ctx)
 	menu_poketest_t *menu_poketest = ctx;
 
 	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
-		return true;
+		return false;
 
 	juego_poketest_t *juego_poketest = juego_poketest_crear(
 		menu_poketest->archivo_pokemones, menu_poketest->semilla,
@@ -273,7 +267,29 @@ bool jugar(void *ctx)
 
 		return true;
 	}
-	juego_poketest_jugar(juego_poketest);
+
+	bool turno_1 = true;
+	float progreso = juego_poketest_progreso(juego_poketest);
+	while (progreso < 100) {
+		juego_poketest_mostrar(juego_poketest);
+		mostrar_progreso_juego(progreso);
+		
+		int tarjeta_1 = 0, tarjeta_2 = 0;
+		seleccionar_tarjetas(&tarjeta_1, &tarjeta_2);
+		if (turno_1 == true) {
+			juego_poketest_jugada(juego_poketest, J1, tarjeta_1, tarjeta_2);
+			turno_1 = false;
+		} else {
+			juego_poketest_jugada(juego_poketest, J2, tarjeta_1, tarjeta_2);
+			turno_1 = true;
+		}
+
+		progreso = juego_poketest_progreso(juego_poketest);
+	}
+	juego_poketest_mostrar(juego_poketest);
+	mostrar_progreso_juego(progreso);
+	juego_poketest_mostrar_resultados(juego_poketest);
+
 	juego_poketest_destruir(juego_poketest);
 
 	return true;
@@ -302,13 +318,13 @@ bool cambiar_estilo(void *ctx)
 	esperar_segundos(2);
 	if (juego_poketest->formato == FORMATO_1) {
 		juego_poketest->formato = FORMATO_2;
-		juego_poketest->muestra_actual = mostrar_formato_predeterminado_2;
+		juego_poketest->muestra_actual = mostrar_formato_2;
 	} else if (juego_poketest->formato == FORMATO_2) {
 		juego_poketest->formato = FORMATO_3;
-		juego_poketest->muestra_actual = mostrar_formato_predeterminado_3;
+		juego_poketest->muestra_actual = mostrar_formato_3;
 	} else {
 		juego_poketest->formato = FORMATO_1;
-		juego_poketest->muestra_actual = mostrar_formato_predeterminado_1;
+		juego_poketest->muestra_actual = mostrar_formato_1;
 	}
 
 	return true;
@@ -356,7 +372,7 @@ menu_poketest_t *menu_poketest_crear()
 		return NULL;
 	}
 	menu_poketest->formato = FORMATO_1;
-	menu_poketest->muestra_actual = mostrar_formato_predeterminado_1;
+	menu_poketest->muestra_actual = mostrar_formato_1;
 	menu_poketest->cantidad_tarjetas = CANTIDAD_TARJETAS;
 
 	return menu_poketest;
