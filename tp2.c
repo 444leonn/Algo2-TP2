@@ -272,6 +272,46 @@ bool jugar_semilla(void *ctx)
 	return jugar(menu_poketest);
 }
 
+void mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return;
+	
+	opcion_t *opcion = _opcion;
+	printf(ANSI_COLOR_BOLD "%s) " ANSI_COLOR_RESET "%s", clave,
+	       opcion->descripcion);
+	printf("\n");
+}
+
+void mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return;
+
+	opcion_t *opcion = _opcion;
+
+	printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "%s" ANSI_COLOR_RESET ". "
+					      "%s",
+	       clave, opcion->descripcion);
+	printf("\n");
+}
+
+void mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return;
+
+	opcion_t *opcion = _opcion;
+
+	printf(ANSI_COLOR_GREEN "┌—————┐\n" ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD
+				"  %s  " ANSI_COLOR_RESET ANSI_COLOR_GREEN
+				"|" ANSI_COLOR_RESET,
+	       clave);
+	printf(" %s\n", opcion->descripcion);
+	printf(ANSI_COLOR_GREEN "└—————┘\n\n" ANSI_COLOR_RESET);
+}
+
 bool cambiar_estilo(void *ctx)
 {
 	if (ctx == NULL)

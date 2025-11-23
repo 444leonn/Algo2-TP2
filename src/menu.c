@@ -73,69 +73,6 @@ bool menu_quitar_opcion(menu_t *menu, char c)
 	return hash_quitar(menu->opciones, _c);
 }
 
-void mostrar_formato_predeterminado_1(char clave, char *descripcion)
-{
-	printf(ANSI_COLOR_BOLD "%c) " ANSI_COLOR_RESET "%s", clave,
-	       descripcion);
-	printf("\n");
-}
-
-void mostrar_formato_predeterminado_2(char clave, char *descripcion)
-{
-	printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "%c" ANSI_COLOR_RESET ". "
-					      "%s",
-	       clave, descripcion);
-	printf("\n");
-}
-
-void mostrar_formato_predeterminado_3(char clave, char *descripcion)
-{
-	printf(ANSI_COLOR_GREEN "┌—————┐\n" ANSI_COLOR_RESET);
-	printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD
-				"  %c  " ANSI_COLOR_RESET ANSI_COLOR_GREEN
-				"|" ANSI_COLOR_RESET,
-	       clave);
-	printf(" %s\n", descripcion);
-	printf(ANSI_COLOR_GREEN "└—————┘\n\n" ANSI_COLOR_RESET);
-}
-
-bool menu_mostrar_opcion(char *clave, void *_opcion, void *_ctx)
-{
-	opcion_t *opcion = _opcion;
-	menu_t *menu = _ctx;
-
-	switch (menu->formato) {
-	case FORMATO_1:
-		mostrar_formato_predeterminado_1(opcion->opcion,
-						 opcion->descripcion);
-		break;
-
-	case FORMATO_2:
-		mostrar_formato_predeterminado_2(opcion->opcion,
-						 opcion->descripcion);
-		break;
-
-	case FORMATO_3:
-		mostrar_formato_predeterminado_3(opcion->opcion,
-						 opcion->descripcion);
-		break;
-
-	case FORMATO_CUSTOM:
-		if (menu->formato_custom.formato_custom != NULL)
-			menu->formato_custom.formato_custom(
-				opcion->opcion, opcion->descripcion);
-		else
-			mostrar_formato_predeterminado_1(opcion->opcion,
-							 opcion->descripcion);
-		break;
-
-	default:
-		break;
-	}
-
-	return true;
-}
-
 char *menu_obtener_nombre(menu_t *menu)
 {
 	if (menu != NULL)
