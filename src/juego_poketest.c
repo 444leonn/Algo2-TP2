@@ -162,8 +162,8 @@ size_t juego_poketest_cargar(juego_poketest_t *juego_poketest)
 	else
 		srand((unsigned int)time(NULL));
 
-	int i = 0;
-	while (i < juego_poketest->cantidad_tarjetas) {
+	size_t cantidad_cargada = 0;
+	while (cantidad_cargada < juego_poketest->cantidad_tarjetas) {
 		struct pokemon *random_pokemon = obtener_random_pokemon(
 			juego_poketest->archivo_pokemones);
 
@@ -184,18 +184,27 @@ size_t juego_poketest_cargar(juego_poketest_t *juego_poketest)
 		juego_poketest->tarjetas[posicion_2].color_actual = COLOR_AZUL;
 		juego_poketest->tarjetas[posicion_2].valor = random_pokemon;
 
-		i += 2;
+		cantidad_cargada += 2;
 	}
 
-	return i;
+	return cantidad_cargada;
 }
 
-bool evaluar_tarjetas(tarjeta_t *tarjetas, int tarjeta_1, size_t tarjeta_2, size_t cantidad_tarjetas)
+bool evaluar_tarjetas(tarjeta_t *tarjetas, int tarjeta_1, int tarjeta_2, size_t cantidad_tarjetas)
 {
-	if (tarjeta_1 >= cantidad_tarjetas || tarjeta_2 >= cantidad_tarjetas)
+	if (tarjeta_1 < 0 || tarjeta_1 >= cantidad_tarjetas || tarjeta_2 < 0 || tarjeta_2 >= cantidad_tarjetas)
 		return false;
 	else if (tarjeta_1 == tarjeta_2)
 		return false;
+
+	esperar_segundos(1);
+	printf(ANSI_COLOR_BOLD
+	       "\n        Cartas Seleccionadas:\n" ANSI_COLOR_RESET);
+	esperar_segundos(1);
+	printf(ANSI_COLOR_CYAN "            %d: %s" ANSI_COLOR_RESET "\n", tarjeta_1, tarjetas[tarjeta_1].valor->nombre);
+	esperar_segundos(1);
+	printf(ANSI_COLOR_CYAN "            %d: %s" ANSI_COLOR_RESET "\n", tarjeta_2, tarjetas[tarjeta_2].valor->nombre);
+	esperar_segundos(1);
 
 	if (comparador_pokemones_id(tarjetas[tarjeta_1].valor, tarjetas[tarjeta_2].valor) == 0)
 		if (tarjetas[tarjeta_1].color_actual == COLOR_AZUL && tarjetas[tarjeta_2].color_actual == COLOR_AZUL) {
@@ -207,15 +216,13 @@ bool evaluar_tarjetas(tarjeta_t *tarjetas, int tarjeta_1, size_t tarjeta_2, size
 	return false;
 }
 
-registro_historial_t *crear_registro_historial(char *jugador,
-					       int primer_tarjeta,
-					       int tarjeta_2, bool resultado)
+registro_historial_t *crear_registro_historial(char *jugador, int primer_tarjeta, int segunda_tarjeta, bool resultado)
 {
 	registro_historial_t *registro = malloc(sizeof(registro_historial_t));
 	if (registro == NULL)
 		return NULL;
 	registro->primer_carta = primer_tarjeta;
-	registro->segunda_carta = tarjeta_2;
+	registro->segunda_carta = segunda_tarjeta;
 	registro->resultado = resultado;
 
 	size_t largo = strlen(jugador) + 1;
@@ -230,7 +237,14 @@ registro_historial_t *crear_registro_historial(char *jugador,
 	return registro;
 }
 
-bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, size_t tarjeta_1, size_t tarjeta_2)
+void destructor_registro_historial(void *_registro)
+{
+	registro_historial_t *registro = _registro;
+	free(registro->registro);
+	free(registro);
+}
+
+bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, int tarjeta_1, int tarjeta_2)
 {
 	if (juego_poketest == NULL)
 		return false;
@@ -255,7 +269,7 @@ bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES juga
 		juego_poketest->jugadores[jugador].puntaje++;
 		juego_poketest->cantidad_seleccionadas += 2;
 
-		juego_poketest->progreso = (juego_poketest->cantidad_seleccionadas * 100) / juego_poketest->cantidad_tarjetas;
+		juego_poketest->progreso = (float) ((juego_poketest->cantidad_seleccionadas * 100) / juego_poketest->cantidad_tarjetas);
 
 		return true;
 	}
@@ -295,19 +309,13 @@ bool mostrar_registro(void *_registro, void *ctx)
 	return true;
 }
 
-void mostrar_juego(tarjeta_t *tarjetas, size_t cantidad, lista_t *historial)
+void juego_poketest_mostrar(juego_poketest_t *juego_poketest)
 {
-	limpiar_pantalla_juego();
+	limpiar_pantalla();
 	printf("\n" ANSI_COLOR_BOLD INICIO_JUEGO ANSI_COLOR_RESET "\n\n");
-	mostrar_tarjetas(tarjetas, cantidad);
-	lista_con_cada_elemento(historial, mostrar_registro, NULL);
-}
 
-void destructor_registro_historial(void *_registro)
-{
-	registro_historial_t *registro = _registro;
-	free(registro->registro);
-	free(registro);
+	mostrar_tarjetas(juego_poketest->tarjetas, juego_poketest->cantidad_tarjetas);
+	lista_con_cada_elemento(juego_poketest->historial, mostrar_registro, NULL);
 }
 
 void juego_poketest_destruir(juego_poketest_t *juego_poketest)

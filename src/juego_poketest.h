@@ -43,7 +43,7 @@ size_t juego_poketest_cargar(juego_poketest_t *juego_poketest);
 *	Realiza la jugada con dos tarjetas.
 *	Devuelve un booleano con el resultado de la jugada.
 */
-bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, size_t tarjeta_1, size_t tarjeta_2);
+bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, int tarjeta_1, int tarjeta_2);
 
 /*
 *	Devuelve el ultimo registro del historial de jugadas.
