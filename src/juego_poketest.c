@@ -107,16 +107,14 @@ tarjeta_t *crear_tarjetas(size_t cantidad)
 juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, int semilla,
 				       size_t cantidad_tarjetas)
 {
-	if (archivo_pokemones == NULL || tp1_cantidad(archivo_pokemones) == 0)
+	if (archivo_pokemones == NULL || tp1_cantidad(archivo_pokemones) == 0 || cantidad_tarjetas == 0)
 		return NULL;
 
 	juego_poketest_t *juego_poketest = calloc(1, sizeof(juego_poketest_t));
 	if (juego_poketest == NULL)
 		return NULL;
 
-	if (semilla != 0)
-		juego_poketest->semilla = semilla;
-
+	juego_poketest->semilla = semilla;
 	juego_poketest->archivo_pokemones = archivo_pokemones;
 	juego_poketest->cantidad_cargada = 0;
 	juego_poketest->cantidad_tarjetas = cantidad_tarjetas;
