@@ -3,7 +3,13 @@
 
 #include "hash.h"
 
-enum formato_muestra { FORMATO_1, FORMATO_2, FORMATO_3, FORMATO_CUSTOM };
+// Estructura para almacenar cada opcion dentro de la tabla de hash de opciones
+typedef struct opcion {
+	char opcion;
+	char *descripcion;
+	bool (*funcion)(void *);
+	void *ctx;
+} opcion_t;
 
 typedef struct menu menu_t;
 
@@ -31,24 +37,15 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 bool menu_quitar_opcion(menu_t *menu, char c);
 
 /*
-*   Permite agregar un formato de muestra para el menu.
-*   Recibe el caracter que identifica la opcion y la descripcion de esa opcion.
+*	Devuelve el nombre de un menu.
+*	Retorna NULL si el menu es invalido.
 */
-void menu_agregar_formato(menu_t *menu, void (*f_formato)(char, char *));
+char *menu_obtener_nombre(menu_t *menu);
 
 /*
-*	Permite modificar el formato que se esta utilizando para mostrar el menu.
-*/
-bool menu_seleccionar_formato(menu_t *menu, enum formato_muestra formato);
-
-/*
-*   Muestra el nombre del menu, si es que posee alguno.
-*   Si el menu es NULL, no se muestra nada.
-*/
-void menu_mostrar_nombre(menu_t *menu);
-
-/*
-*   Muestra el menu, segun el formato de dibujado que sea elegido.
+*   Muestra las opciones del menu.
+*	Se utiliza la funcion pasada por parametro para la muestra.
+*	La misma recibe como primer parametro la clave, luego la opcion_t completa y un puntero auxiliar.
 *   Si el menu es NULL, no se muestra nada.
 */
 void menu_mostrar(menu_t *menu);
@@ -58,12 +55,6 @@ void menu_mostrar(menu_t *menu);
 *   Devuelve lo retornado por la funcion.
 */
 bool menu_ejecutar_opcion(menu_t *menu, char c);
-
-/*
-*   Muestra el menu completo (nombre, y opciones), segun el formato de dibujado que sea elegido.
-*   Si el menu es NULL, no se muestra nada.
-*/
-void menu_mostrar_completo(menu_t *menu);
 
 /*
 *   Recibe un menu y lo destruye.
