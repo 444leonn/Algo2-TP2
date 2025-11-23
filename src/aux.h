@@ -99,4 +99,9 @@ void seleccionar_tarjetas(int *carta_1, int *carta_2);
 */
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b);
 
+/*
+*   Compara dos pokemones por nombre.
+*/
+int comparador_pokemones_nombre(const void *_pokemon_a, const void *_pokemon_b);
+
 #endif // __AUX_H__

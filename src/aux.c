@@ -188,3 +188,11 @@ int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b)
 	const struct pokemon *pokemon_b = _pokemon_b;
 	return pokemon_a->id - pokemon_b->id;
 }
+
+int comparador_pokemones_nombre(const void *_pokemon_a, const void *_pokemon_b)
+{
+	const struct pokemon *pokemon_a = _pokemon_a;
+	const struct pokemon *pokemon_b = _pokemon_b;
+
+	return strcmp(pokemon_a->nombre, pokemon_b->nombre);
+}
