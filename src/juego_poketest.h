@@ -11,7 +11,7 @@
 
 enum COLOR_TARJETA { COLOR_AZUL, COLOR_ROJO };
 
-enum JUGADORES { JUGADOR_1, JUGADOR_2 };
+enum JUGADORES { J1, J2 };
 
 typedef struct tarjeta tarjeta_t;
 
@@ -35,14 +35,13 @@ juego_poketest_t *juego_poketest_crear(tp1_t *archivo_pokemones, int semilla,
 
 /*
 *   Carga cierto contenido del archivo de pokemones para usar en el juego.
-*   Devuelve la cantidad de pokemones cargados en el juego.
+*   Devuelve la cantidad de tarjetas cargadas en el juego.
 */
-bool juego_poketest_cargar(juego_poketest_t *juego_poketest);
+size_t juego_poketest_cargar(juego_poketest_t *juego_poketest);
 
 /*
-*	Realiza la jugada con los numeros de las tarjetas.
-*	Devuelve true si la jugada realiza fue exitosa.
-*	Devuelve false en caso de que el juego sea invalido o la jugada sea incorrecta.
+*	Realiza la jugada con dos tarjetas.
+*	Devuelve un booleano con el resultado de la jugada.
 */
 bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, size_t tarjeta_1, size_t tarjeta_2);
 
@@ -51,18 +50,19 @@ bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES juga
 *	True si el ultimo registro fue de una jugada exitosa.
 *	False si la jugada fue incorrecta.
 */
-bool juego_poketest_ultimo_registro(juego_poketest_t *juego_poketest);
+registro_historial_t *juego_poketest_ultimo_registro(juego_poketest_t *juego_poketest);
 
 /*
-*	Devuelve la cantidad de tarjetas restantes por seleccionar en el juego.
+*	Devuelve el porcentaje del progreso actual del juego.
 *	Devuelve un valor negativo en caso de error.
 */
-int juego_poketest_progreso(juego_poketest_t *juego_poketest);
+float juego_poketest_progreso(juego_poketest_t *juego_poketest);
 
 /*
 *	Devuelve el puntaje total actual del jugador.
+*	Devuelve un valor negativo en caso de error.
 */
-size_t juego_poketest_puntaje(juego_poketest_t *juego_poketest, enum JUGADORES jugador);
+int juego_poketest_puntaje(juego_poketest_t *juego_poketest, enum JUGADORES jugador);
 
 /*
 *	Muestra las tarjetas del juego por pantalla.
