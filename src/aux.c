@@ -152,6 +152,30 @@ bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
 	return true;
 }
 
+void mostrar_nombre_menu(char *nombre)
+{
+	if (nombre == NULL)
+		return;
+
+	size_t largo_nombre = strlen(nombre);
+	for (int i = 0; i < largo_nombre * 4; i++)
+		printf("=");
+	printf("\n");
+	printf("|");
+	for (int i = 0; i < largo_nombre * 4 / 3; i++)
+		printf(" ");
+	printf("%s", nombre);
+	for (int i = 0; i < largo_nombre * 4 / 3 + 1; i++)
+		printf(" ");
+	printf("|");
+	printf("\n");
+	for (int i = 0; i < largo_nombre * 4; i++)
+		printf("=");
+
+	printf("\n");
+
+}
+
 void mostrar_progreso_juego(float progreso)
 {
 	printf(ANSI_BG_GREEN "Progreso: [ %.0f%]" ANSI_BG_RESET, progreso);
