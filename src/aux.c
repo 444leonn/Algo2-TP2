@@ -152,6 +152,22 @@ bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
 	return true;
 }
 
+void mostrar_progreso_juego(float progreso)
+{
+	printf(ANSI_BG_GREEN "Progreso: [ %.0f%]" ANSI_BG_RESET, progreso);
+	printf(ANSI_COLOR_BOLD "  [" ANSI_COLOR_RESET);
+
+	int i = 0;
+	for (i = 0; i < (int)progreso / 5; i++)
+		printf(ANSI_COLOR_BOLD "#" ANSI_COLOR_RESET);
+	if (i < 20)
+		for (int j = i; j < 20; j++)
+			printf(ANSI_COLOR_BOLD "." ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_BOLD "]" ANSI_COLOR_RESET);
+
+	printf("\n");
+}
+
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b)
 {
 	const struct pokemon *pokemon_a = _pokemon_a;

@@ -85,6 +85,11 @@ bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux);
 bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux);
 
 /*
+*   Muestra un mensaje con el progreso del juego.
+*/
+void mostrar_progreso_juego(float progreso);
+
+/*
 *   Compara dos pokemones por id.
 */
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b);
