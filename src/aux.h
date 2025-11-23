@@ -12,6 +12,11 @@
 void limpiar_buffer();
 
 /*
+*   Limpia la terminal.
+*/
+void limpiar_pantalla();
+
+/*
 *   Evalua dos opciones.
 */
 bool evaluar_opciones(char *opcion_evaluada, char *opciones_disponibles);

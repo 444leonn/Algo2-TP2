@@ -11,6 +11,12 @@ void limpiar_buffer()
 		;
 }
 
+void limpiar_pantalla()
+{
+	printf(ANSI_CLEAR_SCREEN);
+	printf(ANSI_RESET_SCREEN);
+}
+
 bool evaluar_opciones(char *opcion_evaluada, char *opciones_disponibles)
 {
 	return strstr(opciones_disponibles, opcion_evaluada) != NULL;
