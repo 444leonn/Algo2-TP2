@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include "tp1.h"
+
 /*
 *   Limpia el buffer de entrada.
 */
@@ -37,6 +39,11 @@ bool evaluar_volver_menu(char *opcion_evaluada);
 char seleccionar_opcion();
 
 /*
+*   Evalua un archivo de pokemones y si es invalido muestra un mensaje por pantalla.
+*/
+bool validar_archivo_pokemones(tp1_t *archivo_pokemones);
+
+/*
 *   Muestra un mensaje.
 */
 void mostrar_mensaje_cargar();
@@ -61,5 +68,25 @@ void mostrar_mensaje_continuar();
 *   Si falla muestra un mensaje de error.
 */
 char *leer_nombre_archivo();
+
+/*
+*   Muestra una opcion por pantalla.
+*/
+bool mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux);
+
+/*
+*   Muestra una opcion por pantalla.
+*/
+bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux);
+
+/*
+*   Muestra una opcion por pantalla.
+*/
+bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux);
+
+/*
+*   Compara dos pokemones por id.
+*/
+int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b);
 
 #endif // __AUX_H__

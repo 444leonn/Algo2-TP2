@@ -14,26 +14,59 @@
 #include "src/constantes.h"
 
 enum MENUS { MENU_PRINCIPAL, MENU_BUSQUEDA, MENU_MUESTRA };
+enum FORMATO_MUESTRA { FORMATO_1, FORMATO_2, FORMATO_3 };
 
 typedef struct menu_poketest {
 	menu_t *menu[CANTIDAD_MENUS];
 	int semilla;
 	size_t cantidad_tarjetas;
-	enum formato_muestra formato;
+	enum FORMATO_MUESTRA formato;
+	bool (*muestra_actual)(char *, void *, void *);
 	tp1_t *archivo_pokemones;
 	abb_t *abb_pokemones_nombre;
 	bool salir;
 } menu_poketest_t;
 
-bool validar_archivo_pokemones(menu_poketest_t *menu_poketest)
+void mostrar_nombre_menu(menu_t *menu)
 {
-	if (menu_poketest != NULL && menu_poketest->archivo_pokemones == NULL) {
-		printf(ANSI_COLOR_RED FALTA_ARCHIVO ANSI_COLOR_RESET "\n");
-		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
-		esperar_segundos(2);
-		return true;
+	if (menu == NULL)
+		return;
+	
+	char *nombre_menu = menu_obtener_nombre(menu);
+	if (nombre_menu != NULL) {
+		size_t largo_menu = strlen(nombre_menu);
+		for (int i = 0; i < largo_menu * 4; i++)
+			printf("=");
+		printf("\n");
+		printf("|");
+		for (int i = 0; i < largo_menu * 4 / 3; i++)
+			printf(" ");
+		printf("%s", nombre_menu);
+		for (int i = 0; i < largo_menu * 4 / 3 + 1; i++)
+			printf(" ");
+		printf("|");
+		printf("\n");
+		for (int i = 0; i < largo_menu * 4; i++)
+			printf("=");
+
+		printf("\n");
 	}
-	return false;
+}
+
+void ejecutar_menu(menu_t *menu, bool (*funcion_muestra)(char *, void *, void *))
+{
+	limpiar_pantalla();
+	
+	mostrar_nombre_menu(menu);
+	menu_mostrar(menu, funcion_muestra);
+	char opcion = seleccionar_opcion();
+	bool ejecutada = menu_ejecutar_opcion(menu, opcion);
+
+	while (ejecutada == false) {
+		mostrar_mensaje_opcion_invalida();
+		opcion = seleccionar_opcion();
+		ejecutada = menu_ejecutar_opcion(menu, opcion);
+	}
 }
 
 bool cargar_archivo(void *ctx)
@@ -190,28 +223,15 @@ bool mostrar_id(void *ctx)
 	return true;
 }
 
-void ejecutar_menu(menu_t *menu)
-{
-	menu_mostrar_completo(menu);
-	char opcion = seleccionar_opcion();
-	bool ejecutada = menu_ejecutar_opcion(menu, opcion);
-
-	while (ejecutada == false) {
-		mostrar_mensaje_opcion_invalida();
-		opcion = seleccionar_opcion();
-		ejecutada = menu_ejecutar_opcion(menu, opcion);
-	}
-}
-
 bool buscar(void *ctx)
 {
 	if (ctx == NULL)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
-	if (validar_archivo_pokemones(menu_poketest) == true)
+	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
 		return true;
-	ejecutar_menu(menu_poketest->menu[MENU_BUSQUEDA]);
+	ejecutar_menu(menu_poketest->menu[MENU_BUSQUEDA], menu_poketest->muestra_actual);
 
 	return true;
 }
@@ -222,9 +242,9 @@ bool mostrar(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
-	if (validar_archivo_pokemones(menu_poketest) == true)
+	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
 		return true;
-	ejecutar_menu(menu_poketest->menu[MENU_MUESTRA]);
+	ejecutar_menu(menu_poketest->menu[MENU_MUESTRA], menu_poketest->muestra_actual);
 
 	return true;
 }
@@ -235,7 +255,7 @@ bool jugar(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
-	if (validar_archivo_pokemones(menu_poketest) == true)
+	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
 		return true;
 
 	juego_poketest_t *juego_poketest = juego_poketest_crear(
@@ -272,46 +292,6 @@ bool jugar_semilla(void *ctx)
 	return jugar(menu_poketest);
 }
 
-void mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux)
-{
-	if (clave == NULL || _opcion == NULL)
-		return;
-	
-	opcion_t *opcion = _opcion;
-	printf(ANSI_COLOR_BOLD "%s) " ANSI_COLOR_RESET "%s", clave,
-	       opcion->descripcion);
-	printf("\n");
-}
-
-void mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux)
-{
-	if (clave == NULL || _opcion == NULL)
-		return;
-
-	opcion_t *opcion = _opcion;
-
-	printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "%s" ANSI_COLOR_RESET ". "
-					      "%s",
-	       clave, opcion->descripcion);
-	printf("\n");
-}
-
-void mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
-{
-	if (clave == NULL || _opcion == NULL)
-		return;
-
-	opcion_t *opcion = _opcion;
-
-	printf(ANSI_COLOR_GREEN "┌—————┐\n" ANSI_COLOR_RESET);
-	printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD
-				"  %s  " ANSI_COLOR_RESET ANSI_COLOR_GREEN
-				"|" ANSI_COLOR_RESET,
-	       clave);
-	printf(" %s\n", opcion->descripcion);
-	printf(ANSI_COLOR_GREEN "└—————┘\n\n" ANSI_COLOR_RESET);
-}
-
 bool cambiar_estilo(void *ctx)
 {
 	if (ctx == NULL)
@@ -320,18 +300,16 @@ bool cambiar_estilo(void *ctx)
 
 	printf(ANSI_COLOR_BLUE MENSAJE_ESTILO ANSI_COLOR_RESET "\n");
 	esperar_segundos(2);
-	if (juego_poketest->formato == FORMATO_1)
+	if (juego_poketest->formato == FORMATO_1) {
 		juego_poketest->formato = FORMATO_2;
-	else if (juego_poketest->formato == FORMATO_2)
+		juego_poketest->muestra_actual = mostrar_formato_predeterminado_2;
+	} else if (juego_poketest->formato == FORMATO_2) {
 		juego_poketest->formato = FORMATO_3;
-	else if (juego_poketest->formato == FORMATO_3)
-		juego_poketest->formato = FORMATO_CUSTOM;
-	else
+		juego_poketest->muestra_actual = mostrar_formato_predeterminado_3;
+	} else {
 		juego_poketest->formato = FORMATO_1;
-
-	for (int i = 0; i < CANTIDAD_MENUS; i++)
-		menu_seleccionar_formato(juego_poketest->menu[i],
-					 juego_poketest->formato);
+		juego_poketest->muestra_actual = mostrar_formato_predeterminado_1;
+	}
 
 	return true;
 }
@@ -378,6 +356,7 @@ menu_poketest_t *menu_poketest_crear()
 		return NULL;
 	}
 	menu_poketest->formato = FORMATO_1;
+	menu_poketest->muestra_actual = mostrar_formato_predeterminado_1;
 	menu_poketest->cantidad_tarjetas = CANTIDAD_TARJETAS;
 
 	return menu_poketest;
@@ -466,7 +445,7 @@ bool menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 		return false;
 
 	while (menu_poketest->salir == false)
-		ejecutar_menu(menu_poketest->menu[MENU_PRINCIPAL]);
+		ejecutar_menu(menu_poketest->menu[MENU_PRINCIPAL], menu_poketest->muestra_actual);
 	return true;
 }
 

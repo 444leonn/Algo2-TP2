@@ -1,5 +1,6 @@
 #include "aux.h"
 
+#include "menu.h"
 #include "constantes.h"
 #include "ansi.h"
 #include "aux_tp1.h"
@@ -52,6 +53,17 @@ char seleccionar_opcion()
 	return c;
 }
 
+bool validar_archivo_pokemones(tp1_t *archivo_pokemones)
+{
+	if (archivo_pokemones == NULL) {
+		printf(ANSI_COLOR_RED FALTA_ARCHIVO ANSI_COLOR_RESET "\n");
+		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
+		esperar_segundos(2);
+		return true;
+	}
+	return false;
+}
+
 void mostrar_mensaje_cargar()
 {
 	printf(ANSI_COLOR_BLUE MENSAJE_CARGAR_ARCHIVO ANSI_COLOR_RESET "\n\n");
@@ -92,4 +104,57 @@ char *leer_nombre_archivo()
 		return NULL;
 	}
 	return nombre;
+}
+
+bool mostrar_formato_predeterminado_1(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return false;
+	
+	opcion_t *opcion = _opcion;
+	printf(ANSI_COLOR_BOLD "%s) " ANSI_COLOR_RESET "%s", clave,
+	       opcion->descripcion);
+	printf("\n");
+
+	return true;
+}
+
+bool mostrar_formato_predeterminado_2(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return false;
+
+	opcion_t *opcion = _opcion;
+
+	printf(ANSI_COLOR_RED ANSI_COLOR_BOLD "%s" ANSI_COLOR_RESET ". "
+					      "%s",
+	       clave, opcion->descripcion);
+	printf("\n");
+
+	return true;
+}
+
+bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux)
+{
+	if (clave == NULL || _opcion == NULL)
+		return false;
+
+	opcion_t *opcion = _opcion;
+
+	printf(ANSI_COLOR_GREEN "┌—————┐\n" ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_GREEN "|" ANSI_COLOR_RESET ANSI_COLOR_BOLD
+				"  %s  " ANSI_COLOR_RESET ANSI_COLOR_GREEN
+				"|" ANSI_COLOR_RESET,
+	       clave);
+	printf(" %s\n", opcion->descripcion);
+	printf(ANSI_COLOR_GREEN "└—————┘\n\n" ANSI_COLOR_RESET);
+
+	return true;
+}
+
+int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b)
+{
+	const struct pokemon *pokemon_a = _pokemon_a;
+	const struct pokemon *pokemon_b = _pokemon_b;
+	return pokemon_a->id - pokemon_b->id;
 }

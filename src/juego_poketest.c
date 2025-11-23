@@ -9,16 +9,9 @@
 #include <time.h>
 
 struct tarjeta {
-	size_t numero_tarjeta;
 	int id_pokemon;
 	enum color_tarjeta color_actual;
 	struct pokemon *valor;
-};
-
-struct registro_historial {
-	char *registro;
-	int primer_carta, segunda_carta;
-	bool resultado;
 };
 
 struct jugador {
@@ -36,20 +29,7 @@ struct juego_poketest {
 	bool turno_jugador_1;
 };
 
-void limpiar_pantalla_juego()
-{
-	printf(ANSI_CLEAR_SCREEN);
-	printf(ANSI_RESET_SCREEN);
-}
-
-void limpiar_buffer_juego()
-{
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF)
-		;
-}
-
-void imprimir_linea_tarjeta(tarjeta_t tarjeta, int linea)
+void imprimir_linea_tarjeta(tarjeta_t tarjeta, size_t numero_tarjeta, int linea)
 {
 	char *color = (tarjeta.color_actual == COLOR_ROJO) ? ANSI_COLOR_RED :
 							     ANSI_COLOR_BLUE;
@@ -69,7 +49,7 @@ void imprimir_linea_tarjeta(tarjeta_t tarjeta, int linea)
 	case 3:
 		printf("%s" ANSI_COLOR_BOLD
 		       "   |    %2zu     |   " ANSI_COLOR_RESET,
-		       color, tarjeta.numero_tarjeta);
+		       color, numero_tarjeta);
 		break;
 	case 4:
 	case 5:
@@ -81,6 +61,9 @@ void imprimir_linea_tarjeta(tarjeta_t tarjeta, int linea)
 		printf("%s" ANSI_COLOR_BOLD
 		       "   └———————————┘   " ANSI_COLOR_RESET,
 		       color);
+		break;
+
+	default:
 		break;
 	}
 }
@@ -110,13 +93,6 @@ void mostrar_tarjetas(tarjeta_t *tarjetas, size_t cantidad_total)
 	printf("\n");
 }
 
-int comparador_pokemones(const void *_pokemon_a, const void *_pokemon_b)
-{
-	const struct pokemon *pokemon_a = _pokemon_a;
-	const struct pokemon *pokemon_b = _pokemon_b;
-	return pokemon_a->id - pokemon_b->id;
-}
-
 tarjeta_t *crear_tarjetas(size_t cantidad)
 {
 	if (cantidad == 0)
@@ -124,8 +100,6 @@ tarjeta_t *crear_tarjetas(size_t cantidad)
 	tarjeta_t *tarjetas = calloc(cantidad, sizeof(tarjeta_t));
 	if (tarjetas == NULL)
 		return NULL;
-	for (size_t i = 0; i < cantidad; i++)
-		tarjetas[i].numero_tarjeta = i;
 
 	return tarjetas;
 }
@@ -262,7 +236,7 @@ bool evaluar_tarjetas(juego_poketest_t *juego_poketest, int carta_1,
 	       carta_2, juego_poketest->tarjetas[carta_2].valor->nombre);
 	esperar_segundos(1);
 
-	if (comparador_pokemones(juego_poketest->tarjetas[carta_1].valor,
+	if (comparador_pokemones_id(juego_poketest->tarjetas[carta_1].valor,
 				 juego_poketest->tarjetas[carta_2].valor) == 0)
 		if (juego_poketest->tarjetas[carta_1].color_actual ==
 			    COLOR_AZUL &&
