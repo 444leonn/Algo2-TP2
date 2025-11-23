@@ -168,6 +168,20 @@ void mostrar_progreso_juego(float progreso)
 	printf("\n");
 }
 
+void seleccionar_tarjetas(int *carta_1, int *carta_2)
+{
+	if (carta_1 == NULL || carta_2 == NULL)
+		return;
+
+	printf(MENSAJE_SELECCION_CARTA_1);
+	if (scanf("%d", carta_1) != 1)
+		limpiar_buffer_juego();
+
+	printf(MENSAJE_SELECCION_CARTA_2);
+	if (scanf("%d", carta_2) != 1)
+		limpiar_buffer_juego();
+}
+
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b)
 {
 	const struct pokemon *pokemon_a = _pokemon_a;

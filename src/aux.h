@@ -90,6 +90,11 @@ bool mostrar_formato_predeterminado_3(char *clave, void *_opcion, void *aux);
 void mostrar_progreso_juego(float progreso);
 
 /*
+*   Muestra un mensaje y pide el ingreso de tarjetas.
+*/
+void seleccionar_tarjetas(int *carta_1, int *carta_2);
+
+/*
 *   Compara dos pokemones por id.
 */
 int comparador_pokemones_id(const void *_pokemon_a, const void *_pokemon_b);
