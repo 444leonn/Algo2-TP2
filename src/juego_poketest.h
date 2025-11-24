@@ -13,7 +13,11 @@ enum COLOR_TARJETA { COLOR_AZUL, COLOR_ROJO };
 
 enum JUGADORES { J1, J2 };
 
-typedef struct tarjeta tarjeta_t;
+typedef struct tarjeta {
+	int id_pokemon;
+	enum COLOR_TARJETA color_actual;
+	struct pokemon *valor;
+} tarjeta_t;
 
 typedef struct registro_historial {
 	char *registro;

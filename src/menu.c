@@ -67,10 +67,24 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 	return resultado;
 }
 
+void destructor_opciones(void *_opcion)
+{
+	if (_opcion != NULL) {
+		opcion_t *opcion = _opcion;
+		free(opcion->descripcion);
+		free(opcion);
+	}
+}
+
 bool menu_quitar_opcion(menu_t *menu, char c)
 {
 	char _c[] = { c, '\0' };
-	return hash_quitar(menu->opciones, _c);
+	opcion_t *eliminada = hash_quitar(menu->opciones, _c);
+	if (eliminada != NULL) {
+		destructor_opciones(eliminada);
+		return true;
+	}
+	return false;
 }
 
 char *menu_obtener_nombre(menu_t *menu)
@@ -102,15 +116,6 @@ bool menu_ejecutar_opcion(menu_t *menu, char c)
 	}
 
 	return false;
-}
-
-void destructor_opciones(void *_opcion)
-{
-	if (_opcion != NULL) {
-		opcion_t *opcion = _opcion;
-		free(opcion->descripcion);
-		free(opcion);
-	}
 }
 
 void menu_destruir(menu_t *menu)

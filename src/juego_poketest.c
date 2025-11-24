@@ -8,12 +8,6 @@
 #include <string.h>
 #include <time.h>
 
-struct tarjeta {
-	int id_pokemon;
-	enum COLOR_TARJETA color_actual;
-	struct pokemon *valor;
-};
-
 struct jugador {
 	size_t puntaje;
 };
