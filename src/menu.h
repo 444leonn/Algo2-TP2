@@ -43,13 +43,13 @@ bool menu_quitar_opcion(menu_t *menu, char c);
 char *menu_obtener_nombre(menu_t *menu);
 
 /*
-*   Muestra las opciones del menu.
+*   Muestra las opciones del menu, devuelve la cantidad de opciones mostradas.
 *	Se utiliza la funcion pasada por parametro para la muestra.
 *	La misma recibe como primer parametro la clave, luego la opcion_t completa y un puntero auxiliar.
 *   Si el menu es NULL, no se muestra nada.
 */
-void menu_mostrar(menu_t *menu,
-		  bool (*funcion_muestra)(char *, void *, void *));
+size_t menu_mostrar(menu_t *menu,
+		    bool (*funcion_muestra)(char *, void *, void *));
 
 /*
 *   Ejecuta una opcion seleccionada una opcion del menu y ejecuta la funcion que debe realizar.

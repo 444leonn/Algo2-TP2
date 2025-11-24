@@ -78,6 +78,9 @@ void destructor_opciones(void *_opcion)
 
 bool menu_quitar_opcion(menu_t *menu, char c)
 {
+	if (menu == NULL || c == '\0')
+		return false;
+
 	char _c[] = { c, '\0' };
 	opcion_t *eliminada = hash_quitar(menu->opciones, _c);
 	if (eliminada != NULL) {
@@ -94,12 +97,13 @@ char *menu_obtener_nombre(menu_t *menu)
 	return NULL;
 }
 
-void menu_mostrar(menu_t *menu, bool (*funcion_muestra)(char *, void *, void *))
+size_t menu_mostrar(menu_t *menu,
+		    bool (*funcion_muestra)(char *, void *, void *))
 {
-	if (menu == NULL || menu->opciones == NULL)
-		return;
+	if (menu == NULL)
+		return 0;
 
-	hash_iterar(menu->opciones, funcion_muestra, NULL);
+	return hash_iterar(menu->opciones, funcion_muestra, NULL);
 }
 
 bool menu_ejecutar_opcion(menu_t *menu, char c)

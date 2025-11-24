@@ -291,6 +291,19 @@ bool juego_poketest_jugada(juego_poketest_t *juego_poketest,
 	return false;
 }
 
+registro_historial_t *
+juego_poketest_ultimo_registro(juego_poketest_t *juego_poketest)
+{
+	if (juego_poketest == NULL)
+		return NULL;
+
+	size_t ultima_posicion = lista_cantidad(juego_poketest->historial) - 1;
+	registro_historial_t *ultimo_registro = lista_buscar_elemento(
+		juego_poketest->historial, ultima_posicion);
+
+	return ultimo_registro;
+}
+
 float juego_poketest_progreso(juego_poketest_t *juego_poketest)
 {
 	if (juego_poketest == NULL)
