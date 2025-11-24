@@ -110,7 +110,7 @@ bool mostrar_formato_1(char *clave, void *_opcion, void *aux)
 {
 	if (clave == NULL || _opcion == NULL)
 		return false;
-	
+
 	opcion_t *opcion = _opcion;
 	printf(ANSI_COLOR_BOLD "%s) " ANSI_COLOR_RESET "%s", clave,
 	       opcion->descripcion);
@@ -173,12 +173,12 @@ void mostrar_nombre_menu(char *nombre)
 		printf("=");
 
 	printf("\n");
-
 }
 
 void mostrar_progreso_juego(float progreso)
 {
-	printf(ANSI_BG_GREEN "\n\nProgreso: [ %.0f%% ]" ANSI_BG_RESET, progreso);
+	printf(ANSI_BG_GREEN "\n\nProgreso: [ %.0f%% ]" ANSI_BG_RESET,
+	       progreso);
 	printf(ANSI_COLOR_BOLD "  [" ANSI_COLOR_RESET);
 
 	int i = 0;

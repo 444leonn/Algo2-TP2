@@ -35,7 +35,7 @@ menu_t *menu_crear(char *nombre)
 
 	if (nombre != NULL)
 		menu->nombre = copiar_nombre_aux(nombre);
-		
+
 	menu->opciones = hash_crear(CAPACIDAD_TABLA);
 	if (menu->opciones == NULL) {
 		if (menu->nombre != NULL)

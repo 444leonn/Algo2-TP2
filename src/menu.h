@@ -48,7 +48,8 @@ char *menu_obtener_nombre(menu_t *menu);
 *	La misma recibe como primer parametro la clave, luego la opcion_t completa y un puntero auxiliar.
 *   Si el menu es NULL, no se muestra nada.
 */
-void menu_mostrar(menu_t *menu, bool (*funcion_muestra)(char *, void *, void *));
+void menu_mostrar(menu_t *menu,
+		  bool (*funcion_muestra)(char *, void *, void *));
 
 /*
 *   Ejecuta una opcion seleccionada una opcion del menu y ejecuta la funcion que debe realizar.

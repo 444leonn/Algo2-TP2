@@ -26,10 +26,11 @@ typedef struct menu_poketest {
 	bool salir;
 } menu_poketest_t;
 
-void ejecutar_menu(menu_t *menu, bool (*funcion_muestra)(char *, void *, void *))
+void ejecutar_menu(menu_t *menu,
+		   bool (*funcion_muestra)(char *, void *, void *))
 {
 	limpiar_pantalla();
-	
+
 	char *nombre_menu = menu_obtener_nombre(menu);
 	mostrar_nombre_menu(nombre_menu);
 	menu_mostrar(menu, funcion_muestra);
@@ -197,7 +198,8 @@ bool buscar(void *ctx)
 
 	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
 		return true;
-	ejecutar_menu(menu_poketest->menu[MENU_BUSQUEDA], menu_poketest->muestra_actual);
+	ejecutar_menu(menu_poketest->menu[MENU_BUSQUEDA],
+		      menu_poketest->muestra_actual);
 
 	return true;
 }
@@ -210,14 +212,16 @@ bool mostrar(void *ctx)
 
 	if (validar_archivo_pokemones(menu_poketest->archivo_pokemones) == true)
 		return true;
-	ejecutar_menu(menu_poketest->menu[MENU_MUESTRA], menu_poketest->muestra_actual);
+	ejecutar_menu(menu_poketest->menu[MENU_MUESTRA],
+		      menu_poketest->muestra_actual);
 
 	return true;
 }
 
 void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
 {
-	if (juego_poketest == NULL || juego_poketest_progreso(juego_poketest) < 100)
+	if (juego_poketest == NULL ||
+	    juego_poketest_progreso(juego_poketest) < 100)
 		return;
 
 	int puntaje_1 = juego_poketest_puntaje(juego_poketest, J1);
@@ -225,8 +229,10 @@ void juego_poketest_mostrar_resultados(juego_poketest_t *juego_poketest)
 
 	printf(ANSI_COLOR_BOLD FIN_JUEGO ANSI_COLOR_RESET "\n\n");
 	printf(ANSI_COLOR_BOLD "Resultados:" ANSI_COLOR_RESET "\n");
-	printf(ANSI_COLOR_BOLD JUGADOR_1 ": %d" ANSI_COLOR_RESET "\n", puntaje_1);
-	printf(ANSI_COLOR_BOLD JUGADOR_2 ": %d" ANSI_COLOR_RESET "\n", puntaje_2);
+	printf(ANSI_COLOR_BOLD JUGADOR_1 ": %d" ANSI_COLOR_RESET "\n",
+	       puntaje_1);
+	printf(ANSI_COLOR_BOLD JUGADOR_2 ": %d" ANSI_COLOR_RESET "\n",
+	       puntaje_2);
 
 	if (puntaje_1 > puntaje_2)
 		printf(ANSI_COLOR_GREEN ANSI_COLOR_BOLD
@@ -273,14 +279,16 @@ bool jugar(void *ctx)
 	while (progreso < 100) {
 		juego_poketest_mostrar(juego_poketest);
 		mostrar_progreso_juego(progreso);
-		
+
 		int tarjeta_1 = 0, tarjeta_2 = 0;
 		seleccionar_tarjetas(&tarjeta_1, &tarjeta_2);
 		if (turno_1 == true) {
-			juego_poketest_jugada(juego_poketest, J1, tarjeta_1, tarjeta_2);
+			juego_poketest_jugada(juego_poketest, J1, tarjeta_1,
+					      tarjeta_2);
 			turno_1 = false;
 		} else {
-			juego_poketest_jugada(juego_poketest, J2, tarjeta_1, tarjeta_2);
+			juego_poketest_jugada(juego_poketest, J2, tarjeta_1,
+					      tarjeta_2);
 			turno_1 = true;
 		}
 
@@ -461,7 +469,8 @@ bool menu_poketest_comenzar(menu_poketest_t *menu_poketest)
 		return false;
 
 	while (menu_poketest->salir == false)
-		ejecutar_menu(menu_poketest->menu[MENU_PRINCIPAL], menu_poketest->muestra_actual);
+		ejecutar_menu(menu_poketest->menu[MENU_PRINCIPAL],
+			      menu_poketest->muestra_actual);
 	return true;
 }
 

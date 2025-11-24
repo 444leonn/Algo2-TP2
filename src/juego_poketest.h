@@ -47,14 +47,17 @@ size_t juego_poketest_cargar(juego_poketest_t *juego_poketest);
 *	Realiza la jugada con dos tarjetas.
 *	Devuelve un booleano con el resultado de la jugada.
 */
-bool juego_poketest_jugada(juego_poketest_t *juego_poketest, enum JUGADORES jugador, int tarjeta_1, int tarjeta_2);
+bool juego_poketest_jugada(juego_poketest_t *juego_poketest,
+			   enum JUGADORES jugador, int tarjeta_1,
+			   int tarjeta_2);
 
 /*
 *	Devuelve el ultimo registro del historial de jugadas.
 *	True si el ultimo registro fue de una jugada exitosa.
 *	False si la jugada fue incorrecta.
 */
-registro_historial_t *juego_poketest_ultimo_registro(juego_poketest_t *juego_poketest);
+registro_historial_t *
+juego_poketest_ultimo_registro(juego_poketest_t *juego_poketest);
 
 /*
 *	Devuelve el porcentaje del progreso actual del juego.
@@ -66,7 +69,8 @@ float juego_poketest_progreso(juego_poketest_t *juego_poketest);
 *	Devuelve el puntaje total actual del jugador.
 *	Devuelve un valor negativo en caso de error.
 */
-int juego_poketest_puntaje(juego_poketest_t *juego_poketest, enum JUGADORES jugador);
+int juego_poketest_puntaje(juego_poketest_t *juego_poketest,
+			   enum JUGADORES jugador);
 
 /*
 *	Muestra las tarjetas del juego por pantalla.
