@@ -50,6 +50,7 @@ bool cargar_archivo(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
+	limpiar_pantalla();
 	mostrar_mensaje_cargar();
 	printf(ANSI_COLOR_BOLD MENSAJE_ARCHIVO ANSI_COLOR_RESET);
 	char *nombre_ingresado = leer_nombre_archivo();

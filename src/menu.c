@@ -1,10 +1,9 @@
 #include "menu.h"
 
-#include "aux.h"
 #include "constantes.h"
-#include "ansi.h"
 
 #include <stdio.h>
+#include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -111,6 +110,7 @@ bool menu_ejecutar_opcion(menu_t *menu, char c)
 	if (menu == NULL || menu->opciones == NULL || c == '\0')
 		return false;
 
+	c = (char)toupper((int)c);
 	char _c[] = { c, '\0' };
 
 	opcion_t *opcion = hash_buscar(menu->opciones, _c);
