@@ -5,6 +5,8 @@
 #include "ansi.h"
 #include "aux_tp1.h"
 
+#include <ctype.h>
+
 void limpiar_buffer()
 {
 	int c;
@@ -104,6 +106,20 @@ char *leer_nombre_archivo()
 		return NULL;
 	}
 	return nombre;
+}
+
+void convertir_palabra(char *palabra)
+{
+	int i = 0;
+	if (palabra[i] != '\0') {
+		palabra[i] = (char)toupper((int)palabra[i]);
+		i++;
+	}
+
+	while (palabra[i] != '\0') {
+		palabra[i] = (char)tolower((int)palabra[i]);
+		i++;
+	}
 }
 
 bool mostrar_formato_1(char *clave, void *_opcion, void *aux)

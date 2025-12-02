@@ -70,6 +70,11 @@ void mostrar_mensaje_continuar();
 char *leer_nombre_archivo();
 
 /*
+*   Convierte un string a un string con la primer letra mayuscula y el resto en minuscula.
+*/
+void convertir_palabra(char *palabra);
+
+/*
 *   Muestra una opcion por pantalla.
 */
 bool mostrar_formato_1(char *clave, void *_opcion, void *aux);
