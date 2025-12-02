@@ -40,6 +40,7 @@ void ejecutar_menu(menu_t *menu,
 	while (ejecutada == false) {
 		mostrar_mensaje_opcion_invalida();
 		opcion = seleccionar_opcion();
+		limpiar_buffer();
 		ejecutada = menu_ejecutar_opcion(menu, opcion);
 	}
 }
@@ -90,12 +91,14 @@ bool buscar_nombre(void *ctx)
 		esperar_segundos(2);
 		return true;
 	}
+	convertir_palabra(nombre_buscado);
 
 	struct pokemon *pokemon_buscado = tp1_buscar_nombre(
 		menu_poketest->archivo_pokemones, nombre_buscado);
 	if (pokemon_buscado == NULL) {
 		printf(ANSI_COLOR_RED NO_ENCONTRADO ANSI_COLOR_RESET "\n");
 		printf(ANSI_COLOR_BLUE MENSAJE_VOLVIENDO ANSI_COLOR_RESET "\n");
+		free(nombre_buscado);
 		esperar_segundos(2);
 		return true;
 	}
@@ -123,7 +126,6 @@ bool buscar_id(void *ctx)
 		esperar_segundos(2);
 		return true;
 	}
-
 	int id_buscado = atoi(_id_buscado);
 	free(_id_buscado);
 
@@ -499,6 +501,7 @@ int main(int argc, char *argv[])
 	if (resultado_construir == false) {
 		printf(ANSI_COLOR_RED ANSI_COLOR_BOLD FALLO ANSI_COLOR_RESET
 		       "\n");
+		menu_poketest_destruir(menu_juego);
 		return ERROR;
 	}
 	menu_poketest_comenzar(menu_juego);
