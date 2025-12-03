@@ -80,7 +80,7 @@ bool menu_quitar_opcion(menu_t *menu, char c)
 {
 	if (menu == NULL || c == '\0')
 		return false;
-	
+
 	c = (char)toupper((int)c);
 	char _c[] = { c, '\0' };
 	opcion_t *eliminada = hash_quitar(menu->opciones, _c);
