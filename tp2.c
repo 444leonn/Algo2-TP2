@@ -62,6 +62,9 @@ bool cargar_archivo(void *ctx)
 		free(nombre_ingresado);
 		return true;
 	}
+	if (menu_poketest->archivo_pokemones != NULL)
+		tp1_destruir(menu_poketest->archivo_pokemones);
+
 	menu_poketest->archivo_pokemones = tp1_leer_archivo(nombre_ingresado);
 	if (menu_poketest->archivo_pokemones == NULL) {
 		mostrar_mensaje_fallo_lectura();
@@ -170,11 +173,21 @@ bool mostrar_nombre(void *ctx)
 		return false;
 	menu_poketest_t *menu_poketest = ctx;
 
+	menu_poketest->abb_pokemones_nombre =
+		abb_crear(comparador_pokemones_nombre);
+	if (menu_poketest->abb_pokemones_nombre == NULL) {
+		mostrar_mensaje_fallo_lectura();
+		return true;
+	}
+
 	tp1_con_cada_pokemon(menu_poketest->archivo_pokemones,
 			     cargar_pokemones_abb,
 			     menu_poketest->abb_pokemones_nombre);
 	abb_con_cada_elemento(menu_poketest->abb_pokemones_nombre, ABB_INORDEN,
 			      mostrar_pokemon_abb, NULL);
+
+	abb_destruir(menu_poketest->abb_pokemones_nombre);
+
 	mostrar_mensaje_continuar();
 
 	return true;
@@ -368,17 +381,14 @@ menu_poketest_t *menu_poketest_crear()
 	menu_poketest->menu[MENU_PRINCIPAL] = menu_crear(NOMBRE_JUEGO);
 	menu_poketest->menu[MENU_BUSQUEDA] = menu_crear(BUSCAR);
 	menu_poketest->menu[MENU_MUESTRA] = menu_crear(MOSTRAR);
-	menu_poketest->abb_pokemones_nombre =
-		abb_crear(comparador_pokemones_nombre);
 
 	for (int i = 0; i < CANTIDAD_MENUS; i++)
 		if (menu_poketest->menu[i] == NULL)
 			reservado = false;
 
-	if (reservado == false || menu_poketest->abb_pokemones_nombre == NULL) {
+	if (reservado == false) {
 		for (int i = 0; i < CANTIDAD_MENUS; i++)
 			menu_destruir(menu_poketest->menu[i]);
-		abb_destruir(menu_poketest->abb_pokemones_nombre);
 		free(menu_poketest);
 		return NULL;
 	}
@@ -483,7 +493,6 @@ void menu_poketest_destruir(menu_poketest_t *menu_poketest)
 		return;
 	for (int i = 0; i < CANTIDAD_MENUS; i++)
 		menu_destruir(menu_poketest->menu[i]);
-	abb_destruir(menu_poketest->abb_pokemones_nombre);
 	tp1_destruir(menu_poketest->archivo_pokemones);
 	free(menu_poketest);
 }

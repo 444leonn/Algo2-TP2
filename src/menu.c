@@ -57,12 +57,20 @@ bool menu_agregar_opcion(menu_t *menu, char c, char *descripcion,
 		return false;
 	nueva_opcion->opcion = c;
 	nueva_opcion->descripcion = copiar_nombre_aux(descripcion);
+	if (nueva_opcion->descripcion == NULL) {
+		free(nueva_opcion);
+		return false;
+	}
 	nueva_opcion->funcion = funcion;
 	nueva_opcion->ctx = ctx;
 
 	c = (char)toupper((int)c);
 	char _c[] = { c, '\0' };
 	bool resultado = hash_insertar(menu->opciones, _c, nueva_opcion, NULL);
+	if (resultado == false) {
+		free(nueva_opcion->descripcion);
+		free(nueva_opcion);
+	}
 
 	return resultado;
 }
