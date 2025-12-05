@@ -36,18 +36,18 @@ void imprimir_linea_tarjeta(tarjeta_t tarjeta, size_t numero_tarjeta, int linea)
 	case 1:
 	case 2:
 		printf("%s" ANSI_COLOR_BOLD
-		       "   |           |   " ANSI_COLOR_RESET,
+		       "   │           │   " ANSI_COLOR_RESET,
 		       color);
 		break;
 	case 3:
 		printf("%s" ANSI_COLOR_BOLD
-		       "   |    %2zu     |   " ANSI_COLOR_RESET,
+		       "   │    %2zu     │   " ANSI_COLOR_RESET,
 		       color, numero_tarjeta);
 		break;
 	case 4:
 	case 5:
 		printf("%s" ANSI_COLOR_BOLD
-		       "   |           |   " ANSI_COLOR_RESET,
+		       "   │           │   " ANSI_COLOR_RESET,
 		       color);
 		break;
 	case 6:
